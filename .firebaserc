@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "blog-with-angular-and-firebase": {
+      "hosting": {
+        "blog": [
+          "blog-with-angular-and-firebase"
+        ]
+      }
+    }
+  }
+}
