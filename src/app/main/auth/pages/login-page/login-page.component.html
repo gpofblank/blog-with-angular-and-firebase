@@ -10,9 +10,19 @@
                 <img src="https://placeimg.com/128/128/nature">
               </div>
               <div class="col-md-7">
-                <form>
-                  <input type="text" class="form-control mb-2" placeholder="Email" required autofocus>
-                  <input type="password" class="form-control mb-2" placeholder="Password" required>
+                <form [formGroup]="loginForm" (ngSubmit)="submitForm()">
+                  <input
+                    type="email"
+                    formControlName="email"
+                    placeholder="Email"
+                    class="form-control mb-2"
+                  />
+                  <input
+                    type="password"
+                    formControlName="password"
+                    placeholder="Password"
+                    class="form-control mb-2"
+                  />
                   <button class="btn btn-lg btn-primary btn-block mb-1" type="submit">Login</button>
                 </form>
               </div>
