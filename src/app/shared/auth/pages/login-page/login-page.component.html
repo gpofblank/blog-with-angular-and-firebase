@@ -1,0 +1,56 @@
+<div class="d-flex align-items-center h-100-wo-nav">
+  <div class="container pt-3">
+    <div class="row justify-content-sm-center">
+      <div class="col-sm-10 col-md-6">
+        <div class="card border-info">
+          <div class="card-header">Login</div>
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-md-5 text-center mb-1">
+                <img src="https://placeimg.com/128/128/nature">
+              </div>
+              <div class="col-md-7">
+                <form [formGroup]="loginForm" (ngSubmit)="submitForm()">
+                  <input
+                    type="email"
+                    formControlName="email"
+                    placeholder="Email"
+                    class="form-control mb-2"
+                  />
+                  <div class="alert-danger p-1 mb-1" *ngIf="submitted && email.errors?.required">Email is required</div>
+                  <div class="alert-danger p-1 mb-1 mt-1" *ngIf="submitted && email.errors?.email">Email should look
+                    like an email
+                  </div>
+                  <input
+                    type="password"
+                    formControlName="password"
+                    placeholder="Password"
+                    class="form-control mb-2"
+                  />
+                  <div class="alert-danger p-1 mb-2" *ngIf="submitted && password.errors?.required">Password is
+                    required
+                  </div>
+                  <button
+                    class="btn btn-lg btn-primary btn-block mb-1"
+                    type="submit">
+                    Login
+                  </button>
+                  <div class="d-flex justify-content-between flex-wrap">
+                    <a routerLink="/auth/register">Register</a>
+                    <a routerLink="/auth/forgot-password">Forgot Password?</a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button
+          class="btn btn-lg btn-primary btn-block mb-1 mt-n1"
+          type="button"
+          (click)="logInWithGoogle()">
+          Login With Google
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

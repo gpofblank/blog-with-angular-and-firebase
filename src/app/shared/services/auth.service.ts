@@ -51,13 +51,20 @@ export class AuthService {
       });
   }
 
-  SignUp(email, password) {
+  SignUp(email, password, displayName, type) {
     return this.afAuth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
         /* Call the SendVerificaitonMail() function when new user sign
         up and returns promise */
         this.SendVerificationMail();
         this.SetLoggedUser(result.user);
+
+        // set custom properties for the newly created user
+        this.afs.collection('users').doc(result.user.uid).set({
+          displayName,
+          type
+        }, {merge: true});
+
       }).catch((error) => {
         window.alert(error.message);
       });
