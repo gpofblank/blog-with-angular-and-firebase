@@ -6,3 +6,7 @@ body {
 p {
   color: white;
 }
+
+.h-100-wo-nav {
+  height: calc(100vh - 70px);
+}

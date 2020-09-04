@@ -8,6 +8,7 @@ import {environment} from '../environments/environment';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import { PostComponent } from './main/posts/components/post/post.component';
 import { NavigationComponent } from './shared/navigation/navigation.component';
+import {AuthService} from './shared/services/auth.service';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,9 @@ import { NavigationComponent } from './shared/navigation/navigation.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule
   ],
-  providers: [],
+  providers: [
+    AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
