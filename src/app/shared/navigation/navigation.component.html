@@ -1,1 +1,58 @@
-<p>navigation works!</p>
+<div *ngIf="!loggedUser.isAdmin">
+  <nav class="navbar shadow navbar-light navbar-expand-md bg-light">
+    <a class="navbar-brand" href="#">Blog Guru</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbar"
+            aria-controls="topNavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="topNavbar">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+          <a class="nav-link" routerLink="/main">Home<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+          <a class="nav-link" routerLink="/main/user-profile/{{loggedUser.id}}">Profile<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">Disabled</a>
+        </li>
+      </ul>
+      <div class="navbar-nav nav-item my-2 my-md-0" [routerLinkActive]="['active']"
+           [routerLinkActiveOptions]="{exact:true}">
+        <a class="nav-link" href="#" routerLink="/main/user-profile/asd">Profile</a>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<div *ngIf="loggedUser.isAdmin">
+  <nav class="navbar shadow navbar-light navbar-expand-md bg-light">
+    <a class="navbar-brand" href="#">Blog Guru (ADMIN)</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbar"
+            aria-controls="topNavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="topNavbar">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+          <a class="nav-link" routerLink="/main">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">Disabled</a>
+        </li>
+      </ul>
+      <div class="navbar-nav nav-item my-2 my-md-0" [routerLinkActive]="['active']"
+           [routerLinkActiveOptions]="{exact:true}">
+        <a class="nav-link" href="#" routerLink="/main/user-profile/asd">Profile</a>
+      </div>
+    </div>
+  </nav>
+</div>

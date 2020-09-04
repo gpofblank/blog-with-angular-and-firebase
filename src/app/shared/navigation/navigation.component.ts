@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {AuthService} from '../services/auth.service';
+import {User} from 'firebase';
 
 @Component({
   selector: 'app-navigation',
@@ -7,7 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationComponent implements OnInit {
 
-  constructor() { }
+  loggedUser: User;
+
+  constructor(private authService: AuthService) {
+    // if (this.authService.loggedUser) {
+    //   this.loggedUser = this.authService.loggedUser;
+    // }
+  }
 
   ngOnInit(): void {
   }
