@@ -1,1 +1,16 @@
-<p>post works!</p>
+<div class="content">
+  <div class="card">
+    <div class="firstinfo">
+      <img src="{{user.photoURL || 'https://pixabay.com/bg/vectors/%D0%B0%D0%B2%D0%B0%D1%82%D0%B0%D1%80-%D0%BA%D0%BB%D1%8E%D0%BD-%D1%87%D0%B5%D1%80%D0%B5%D0%BD-%D1%81%D0%BB%D0%B0%D0%B4%D1%8A%D0%BA-%D0%B5%D0%BC%D0%BE%D1%86%D0%B8%D1%8F-1295429/'}}"/>
+      <div class="profileinfo">
+        <h1>{{user.displayName}}</h1>
+        <h3>Role: {{user.role}}</h3>
+        <p class="bio">The UID of {{user.displayName}} is {{user.uid}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="badgescard"><span class="devicons devicons-django"></span><span
+    class="devicons devicons-python"> </span><span class="devicons devicons-codepen"></span><span
+    class="devicons devicons-javascript_badge"></span><span class="devicons devicons-gulp"></span><span
+    class="devicons devicons-angular"></span><span class="devicons devicons-sass"> </span></div>
+</div>
