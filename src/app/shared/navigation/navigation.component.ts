@@ -29,14 +29,18 @@ export class NavigationComponent implements OnInit, OnDestroy {
     //   }
     // });
 
-    this.loggedUserSub = this.authService.loggedUserFromDbUsers$.subscribe((user) => {
-      // this.loggedUser = this.afs.collection('users').doc(user.uid).get().subscribe(rec => rec.data())
-      if (user) {
-        this.loggedUser = user;
-      } else {
-        this.loggedUser = {} as User;
-      }
-    });
+    if (!!this.afAuth.currentUser) {
+      this.loggedUserSub = this.authService.loggedUserFromDbUsers$.subscribe((user) => {
+        // this.loggedUser = this.afs.collection('users').doc(user.uid).get().subscribe(rec => rec.data())
+        if (user) {
+          this.loggedUser = user;
+        } else {
+          this.loggedUser = {} as User;
+        }
+      });
+    } else {
+      this.loggedUser = {} as User;
+    }
 
 
   }
@@ -50,8 +54,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.loggedUserSub) {
-      this.loggedUserSub.unsubscribe();
-    }
+    // if (this.loggedUserSub) {
+    //   this.loggedUserSub.unsubscribe();
+    // }
   }
 }

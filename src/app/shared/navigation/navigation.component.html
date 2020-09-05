@@ -7,7 +7,8 @@
   <div class="collapse navbar-collapse" id="topNavbar">
 
     <li class="nav-item">
-      <a class="text-black-50 nav-link mr-auto">Hello: {{(authService.loggedUserFromDbUsers$ | async)?.displayName}} </a>
+      <a
+        class="text-black-50 nav-link mr-auto">Hello local: {{loggedUser?.displayName}} </a>
     </li>
     <li class="nav-item">
       <a class="text-black-50 nav-link mr-auto">UID: {{(authService.loggedUserFromDbAuth$ | async)?.uid}} </a>
@@ -17,7 +18,7 @@
     </li>
 
     <!-- guest nav -->
-    <ul *ngIf="!loggedUser" class="navbar-nav ml-auto">
+    <ul *ngIf="!loggedUser?.uid" class="navbar-nav ml-auto">
       <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
         <a class="nav-link" routerLink="/auth/login">Login</a>
       </li>
@@ -27,15 +28,15 @@
     </ul>
 
     <!-- logged user nav -->
-    <ul *ngIf="loggedUser.uid && loggedUser.role !== 'admin'" class="navbar-nav ml-auto">
+    <ul *ngIf="loggedUser?.uid && loggedUser?.role !== 'admin'" class="navbar-nav ml-auto">
       <li class="nav-item">
-        <a class="nav-link">Hello: {{loggedUser.uid}} </a>
+        <a class="nav-link">Hello: {{loggedUser?.uid}} </a>
       </li>
       <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
         <a class="nav-link" routerLink="/main">Home</a>
       </li>
       <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a class="nav-link" routerLink="/main/user-profile/{{loggedUser.uid}}">Profile</a>
+        <a class="nav-link" routerLink="/main/user-profile/{{loggedUser?.uid}}">Profile</a>
       </li>
       <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
         <a class="nav-link" (click)="logOut()">Logout</a>
@@ -43,12 +44,15 @@
     </ul>
 
     <!-- admin nav -->
-    <ul *ngIf="loggedUser.uid && loggedUser.role === 'admin'" class="navbar-nav ml-auto">
+    <ul *ngIf="loggedUser?.uid && loggedUser?.role === 'admin'" class="navbar-nav ml-auto">
       <li class="nav-item active" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a class="nav-link" routerLink="/admin">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" routerLink="/admin">Home</a>
       </li>
       <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a class="nav-link" routerLink="/main/user-profile/{{loggedUser.uid}}">Profile</a>
+        <a class="nav-link" routerLink="/main/user-profile/{{loggedUser?.uid}}">Profile</a>
+      </li>
+      <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+        <a class="nav-link" (click)="logOut()">Logout</a>
       </li>
     </ul>
   </div>

@@ -5,8 +5,10 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import {User} from '../../main/users/models/user';
 import * as firebase from 'firebase';
 import {NotificationsService} from 'angular2-notifications';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 import GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
+import {firestore} from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +33,7 @@ export class AuthService {
 
     // this.loggedUserFromDbUsers$.next({} as User);
     //
-    const loggedUserFromDbUsersSub = this.loggedUserFromDbAuth$.subscribe(
+    this.loggedUserFromDbAuth$.subscribe(
       (user => {
         if (user) {
           this.afs.collection('users')
@@ -43,66 +45,20 @@ export class AuthService {
               this.loggedUserFromDbUsers$.next(this.loggedUser);
             });
         } else {
-          this.loggedUser = null;
-          this.loggedUserFromDbUsers$.next(null);
+          this.loggedUser = {} as User;
+          this.loggedUserFromDbUsers$.next({} as User);
         }
       })
     );
-    loggedUserFromDbUsersSub.unsubscribe();
 
-    // this.afAuth.authState.subscribe(user => {
-
-    // if (user) {
-    //   // afs.collection('users').doc(user.uid).ref.get().then(
-    //   //   (loggedUser) => this.loggedUser = loggedUser);
-    //   // console.log(this.loggedUser);
-    //   //
-    //   // this.loggedUserFromDbAuth$.next(user);
-    //   console.log('afAuth user -> ', user)
-    //
-    //   localStorage.setItem('user', JSON.stringify(this.loggedUser));
-    //   JSON.parse(localStorage.getItem('user'));
-    // } else {
-    //   this.loggedUser = null;
-    //   localStorage.setItem('user', null);
-    //   JSON.parse(localStorage.getItem('user'));
-    //   // this.loggedUser = {} as User;
-    //   // this.loggedUserFromDbAuth$.next({} as User);
-    // }
-    // });
-  }
-
-// tslint:disable-next-line:variable-name
-  _isLoggedIn: boolean;
+   }
 
   // Returns true when user is logged in and email is verified
   get isLoggedIn(): boolean {
-    // // const user = JSON.parse(localStorage.getItem('user'));
-    // // return (user !== null && user.emailVerified !== false);
-    // let isLoggedIn = false;
-    // // this.loggedUserFromDbAuth$.pipe(
-    // //   map(user => {
-    // //     return isLoggedIn = (user !== null && user.emailVerified !== false);
-    // //   }));
-    //
-    // const isLoggedInSub = this.afAuth.authState.subscribe((user) => {
-    //   isLoggedIn = !!user;
-    // });
-    // isLoggedInSub.unsubscribe();
-
-    const tempIsLoggedInSub = this.afAuth.authState.subscribe(res => {
-      this._isLoggedIn = !!(res.uid);
-    });
-
-    tempIsLoggedInSub.unsubscribe();
-
-    console.log('from guard ->', this._isLoggedIn);
-    return this._isLoggedIn;
+    return !!this.afAuth.currentUser;
   }
 
   get Role() {
-    // const user = JSON.parse(localStorage.getItem('user'));
-    // return user.role;
     return this.loggedUser.role;
   }
 
@@ -218,7 +174,7 @@ export class AuthService {
   SignOut() {
     return this.afAuth.signOut().then(() => {
       // localStorage.removeItem('user');
-      this.loggedUser = null;
+      this.loggedUser = {} as User;
       this.loggedUserFromDbUsers$.next(this.loggedUser);
       this.router.navigateByUrl('auth/login');
 

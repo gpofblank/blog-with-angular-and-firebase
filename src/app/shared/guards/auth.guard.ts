@@ -30,6 +30,8 @@ export class AuthGuard implements CanActivate {
   }
 
   checkUserLogin(route: ActivatedRouteSnapshot, url: any): boolean {
+    console.log('guard logged in ', this.authService.isLoggedIn)
+
     if (this.authService.isLoggedIn) {
       const userRole = this.authService.Role;
 
