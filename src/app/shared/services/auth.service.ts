@@ -55,7 +55,7 @@ export class AuthService {
 
   // Returns true when user is logged in and email is verified
   get isLoggedIn(): boolean {
-    return !!this.afAuth.currentUser;
+    return this.loggedUser.uid != null;
   }
 
   get Role() {

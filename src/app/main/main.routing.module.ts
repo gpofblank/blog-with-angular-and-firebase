@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
+import {AuthGuard} from '../shared/guards/auth.guard';
 
 
 const routes: Routes = [
@@ -14,6 +15,7 @@ const routes: Routes = [
   },
   {
     path: 'user-profile/:id',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./users/pages/user-profile-page/user-profile-page.module').then(m => m.UserProfilePageModule),
   }
 ];
