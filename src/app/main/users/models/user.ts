@@ -9,5 +9,5 @@ export interface User {
 
 export enum Role {
   admin = 'admin',
-  user = 'user'
+  user = 'user',
 }

@@ -31,7 +31,7 @@ export class AuthGuard implements CanActivate {
 
   checkUserLogin(route: ActivatedRouteSnapshot, url: any): boolean {
     if (this.authService.isLoggedIn) {
-      const userRole = this.authService.getRole;
+      const userRole = this.authService.Role;
 
       if (route.data.role && route.data.role.indexOf(userRole) === -1) {
         this.notificationsService

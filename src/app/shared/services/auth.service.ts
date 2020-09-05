@@ -2,20 +2,20 @@ import {Injectable, NgZone} from '@angular/core';
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
 import {Router} from '@angular/router';
 import {AngularFireAuth} from '@angular/fire/auth';
-import {Role, User} from '../../main/users/models/user';
+import {User} from '../../main/users/models/user';
 import * as firebase from 'firebase';
 import {NotificationsService} from 'angular2-notifications';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
-import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  loggedUser: any;
-
-  user$: Observable<User>;
+  public loggedUserFromDbAuth$: Observable<firebase.User>;
+  public loggedUserFromDbUsers$: BehaviorSubject<User> = new BehaviorSubject<User>({} as User);
+  loggedUser: User = {} as User;
 
   constructor(
     public afs: AngularFirestore,
@@ -24,31 +24,86 @@ export class AuthService {
     public ngZone: NgZone, // NgZone service to remove outside scope warning
     private notificationsService: NotificationsService
   ) {
-    // Saving user data in localstorage when logged in and setting up null when logged out
+
+    this.loggedUserFromDbAuth$ = new Observable<firebase.User>((subscriber) => {
+      this.afAuth.onAuthStateChanged(subscriber);
+    });
+
+    // this.loggedUserFromDbUsers$.next({} as User);
+    //
+    const loggedUserFromDbUsersSub = this.loggedUserFromDbAuth$.subscribe(
+      (user => {
+        if (user) {
+          this.afs.collection('users')
+            .doc(user.uid)
+            .ref.get()
+            .then((u) => {
+              console.log('dataaa ', u.data() as User);
+              this.loggedUser = u.data() as User;
+              this.loggedUserFromDbUsers$.next(this.loggedUser);
+            });
+        } else {
+          this.loggedUser = null;
+          this.loggedUserFromDbUsers$.next(null);
+        }
+      })
+    );
+    loggedUserFromDbUsersSub.unsubscribe();
+
     // this.afAuth.authState.subscribe(user => {
-    //   if (user) {
-    //     this.loggedUser = user;
-    //     localStorage.setItem('user', JSON.stringify(this.loggedUser));
-    //     JSON.parse(localStorage.getItem('user'));
-    //   } else {
-    //     localStorage.setItem('user', null);
-    //     JSON.parse(localStorage.getItem('user'));
-    //   }
+
+    // if (user) {
+    //   // afs.collection('users').doc(user.uid).ref.get().then(
+    //   //   (loggedUser) => this.loggedUser = loggedUser);
+    //   // console.log(this.loggedUser);
+    //   //
+    //   // this.loggedUserFromDbAuth$.next(user);
+    //   console.log('afAuth user -> ', user)
+    //
+    //   localStorage.setItem('user', JSON.stringify(this.loggedUser));
+    //   JSON.parse(localStorage.getItem('user'));
+    // } else {
+    //   this.loggedUser = null;
+    //   localStorage.setItem('user', null);
+    //   JSON.parse(localStorage.getItem('user'));
+    //   // this.loggedUser = {} as User;
+    //   // this.loggedUserFromDbAuth$.next({} as User);
     // }
-
-    this.user$ = this.afAuth.user;
-
+    // });
   }
+
+// tslint:disable-next-line:variable-name
+  _isLoggedIn: boolean;
 
   // Returns true when user is logged in and email is verified
   get isLoggedIn(): boolean {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return (user !== null && user.emailVerified !== false);
+    // // const user = JSON.parse(localStorage.getItem('user'));
+    // // return (user !== null && user.emailVerified !== false);
+    // let isLoggedIn = false;
+    // // this.loggedUserFromDbAuth$.pipe(
+    // //   map(user => {
+    // //     return isLoggedIn = (user !== null && user.emailVerified !== false);
+    // //   }));
+    //
+    // const isLoggedInSub = this.afAuth.authState.subscribe((user) => {
+    //   isLoggedIn = !!user;
+    // });
+    // isLoggedInSub.unsubscribe();
+
+    const tempIsLoggedInSub = this.afAuth.authState.subscribe(res => {
+      this._isLoggedIn = !!(res.uid);
+    });
+
+    tempIsLoggedInSub.unsubscribe();
+
+    console.log('from guard ->', this._isLoggedIn);
+    return this._isLoggedIn;
   }
 
-  get getRole(): boolean {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return user.role;
+  get Role() {
+    // const user = JSON.parse(localStorage.getItem('user'));
+    // return user.role;
+    return this.loggedUser.role;
   }
 
   // Sign in with email/password
@@ -77,14 +132,7 @@ export class AuthService {
         /* Call the SendVerificaitonMail() function when new user sign
         up and returns promise */
         this.SendVerificationMail();
-        this.SetLoggedUser(result.user);
-
-        // set custom properties for the newly created user
-        this.afs.collection('users').doc(result.user.uid).set({
-          displayName,
-          role
-        }, {merge: true});
-
+        this.SetLoggedUser(result.user, displayName, role);
       }).catch((error) => {
         this.notificationsService
           .error('Error', error.message, {
@@ -152,15 +200,15 @@ export class AuthService {
       });
   }
 
-  // upsert user (doc) in users collection upon registering a new user.
-  SetLoggedUser(user) {
+  // add user (doc) in users collection upon registering a new user.
+  SetLoggedUser(user, displayName, role) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
     const loggedUser: Partial<User> = {
       uid: user.uid,
       email: user.email,
-      displayName: user.displayName,
       emailVerified: user.emailVerified,
-      role: user.role
+      displayName,
+      role
     };
     return userRef.set(loggedUser, {
       merge: true
@@ -169,8 +217,20 @@ export class AuthService {
 
   SignOut() {
     return this.afAuth.signOut().then(() => {
-      localStorage.removeItem('user');
+      // localStorage.removeItem('user');
+      this.loggedUser = null;
+      this.loggedUserFromDbUsers$.next(this.loggedUser);
       this.router.navigateByUrl('auth/login');
+
+      this.notificationsService
+        .success('Have a good one!', 'Thanks for visiting Blog Guru', {
+          timeOut: 3000,
+          showProgressBar: true,
+          pauseOnHover: true,
+          clickToClose: true,
+          preventLastDuplicates: true
+        });
+
     });
   }
 
