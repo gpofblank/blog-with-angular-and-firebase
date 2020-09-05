@@ -9,18 +9,22 @@ import {AngularFirestoreModule} from '@angular/fire/firestore';
 import { PostComponent } from './main/posts/components/post/post.component';
 import { NavigationComponent } from './shared/navigation/navigation.component';
 import {AuthService} from './shared/services/auth.service';
+import {SimpleNotificationsModule} from 'angular2-notifications';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
     AppComponent,
     PostComponent,
-    NavigationComponent
+    NavigationComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    SimpleNotificationsModule.forRoot(),
+    BrowserAnimationsModule
   ],
   providers: [
     AuthService

@@ -1,6 +1,4 @@
-import { Component } from '@angular/core';
-import {AngularFirestore} from '@angular/fire/firestore';
-import {Observable} from 'rxjs';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +7,12 @@ import {Observable} from 'rxjs';
 })
 export class AppComponent {
   title = 'blog';
+  options = {
+    position: ['bottom', 'center'],
+    animate: 'fromBottom'
+  };
 
-  constructor() {}
+  constructor() {
+  }
 
 }

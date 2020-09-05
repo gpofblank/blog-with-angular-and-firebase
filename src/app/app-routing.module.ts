@@ -1,12 +1,19 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {AuthGuard} from './shared/guards/auth.guard';
 
 
 const routes: Routes = [
-  { path: '', loadChildren: () => import('./shared/auth/pages/login-page/login-page.module').then(m => m.LoginPageModule)},
-  { path: 'auth', loadChildren: () => import('./shared/auth/auth.module').then(m => m.AuthModule)},
-  { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)},
-  { path: 'main', loadChildren: () => import('./main/main.module').then(m => m.MainModule)},
+  {path: '', loadChildren: () => import('./main/home-page/home-page.module').then(m => m.HomePageModule)},
+  {path: 'auth', loadChildren: () => import('./shared/auth/auth.module').then(m => m.AuthModule)},
+  {
+    path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
+    canActivate: [AuthGuard],
+    data: {
+      role: 'admin'
+    }
+  },
+  {path: 'main', loadChildren: () => import('./main/main.module').then(m => m.MainModule)},
   {path: '**', redirectTo: ''}
 ];
 
@@ -14,4 +21,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes, {useHash: true})],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

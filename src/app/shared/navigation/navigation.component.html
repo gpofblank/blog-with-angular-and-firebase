@@ -1,41 +1,41 @@
-<div *ngIf="!loggedUser.isAdmin">
-  <nav class="navbar shadow navbar-light navbar-expand-md bg-light">
-    <a class="navbar-brand" href="#">Blog Guru</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbar"
-            aria-controls="topNavbar" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+<nav class="navbar shadow navbar-light navbar-expand-md bg-light">
+  <a class="navbar-brand" routerLink="/main">Blog Guru</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbar"
+          aria-controls="topNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="topNavbar">
+    <!-- logged user nav -->
+    <ul *ngIf="loggedUser" class="navbar-nav ml-auto">
+      <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+        <a class="nav-link" routerLink="/main">Home</a>
+      </li>
+      <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+        <a class="nav-link" routerLink="/main/user-profile/{{loggedUser.uid}}">Profile</a>
+      </li>
+      <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+        <a class="nav-link" (click)="logOut()">Logout</a>
+      </li>
+    </ul>
 
-    <div class="collapse navbar-collapse" id="topNavbar">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a class="nav-link" routerLink="/main">Home</a>
-        </li>
-        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a class="nav-link" routerLink="/main/user-profile/{{loggedUser.uid}}">Profile</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-</div>
+    <!-- guest nav -->
+    <ul *ngIf="!loggedUser" class="navbar-nav ml-auto">
+      <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+        <a class="nav-link" routerLink="/auth/login">Login</a>
+      </li>
+      <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+        <a class="nav-link" routerLink="/auth/register">Register</a>
+      </li>
+    </ul>
 
-<div *ngIf="loggedUser.isAdmin">
-  <nav class="navbar shadow navbar-light navbar-expand-md bg-light">
-    <a class="navbar-brand" href="#">Blog Guru (ADMIN)</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbar"
-            aria-controls="topNavbar" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="topNavbar">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item active" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a class="nav-link" routerLink="/main">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a class="nav-link" routerLink="/main/user-profile/{{loggedUser.uid}}">Profile</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-</div>
+    <!-- admin nav -->
+    <ul *ngIf="loggedUser && loggedUser.role === 'admin'" class="navbar-nav ml-auto">
+      <li class="nav-item active" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+        <a class="nav-link" routerLink="/admin">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+        <a class="nav-link" routerLink="/main/user-profile/{{loggedUser.uid}}">Profile</a>
+      </li>
+    </ul>
+  </div>
+</nav>
