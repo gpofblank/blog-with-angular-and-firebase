@@ -11,13 +11,10 @@ import { NavigationComponent } from './shared/navigation/navigation.component';
 import {AuthService} from './shared/services/auth.service';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {UserComponent} from './main/users/components/user/user.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PostComponent,
-    UserComponent,
     NavigationComponent,
   ],
   imports: [
@@ -26,7 +23,7 @@ import {UserComponent} from './main/users/components/user/user.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     SimpleNotificationsModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [
     AuthService

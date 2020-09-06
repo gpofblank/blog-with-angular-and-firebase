@@ -7,10 +7,12 @@ const routes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: () => import('./home-page/home-page.module').then(m => m.HomePageModule)},
   {
     path: 'create-post',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./posts/pages/create-post-page/create-post-page.module').then(m => m.CreatePostPageModule)
   },
   {
     path: 'edit-post/:id',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./posts/pages/edit-post-page/edit-post-page.module').then(m => m.EditPostPageModule)
   },
   {

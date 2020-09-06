@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {User} from '../../models/user';
+import {AngularFireAuth} from '@angular/fire/auth';
+import {AuthService} from '../../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-user-profile-page',
@@ -6,8 +9,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-profile-page.component.scss']
 })
 export class UserProfilePageComponent implements OnInit {
+  user: User;
 
-  constructor() { }
+  constructor(private authService: AuthService) {
+    this.user = this.authService.loggedUser || {} as User;
+  }
 
   ngOnInit(): void {
   }

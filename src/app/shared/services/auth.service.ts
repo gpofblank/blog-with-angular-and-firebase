@@ -17,7 +17,7 @@ export class AuthService {
 
   public loggedUserFromDbAuth$: Observable<firebase.User>;
   public loggedUserFromDbUsers$: BehaviorSubject<User> = new BehaviorSubject<User>({} as User);
-  loggedUser: User = {} as User;
+  public loggedUser: User = {} as User;
 
   constructor(
     public afs: AngularFirestore,
@@ -58,7 +58,7 @@ export class AuthService {
     return this.loggedUser.uid != null;
   }
 
-  get Role() {
+  get userRole() {
     return this.loggedUser.role;
   }
 
