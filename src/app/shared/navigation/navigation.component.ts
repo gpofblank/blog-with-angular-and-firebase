@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AuthService} from '../services/auth.service';
+import {AuthService} from '../auth/services/auth.service';
 import {NotificationsService} from 'angular2-notifications';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Subscription} from 'rxjs';

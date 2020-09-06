@@ -11,15 +11,18 @@ import {
   UrlTree
 } from '@angular/router';
 import {Observable} from 'rxjs';
-import {AuthService} from '../services/auth.service';
+import {AuthService} from '../auth/services/auth.service';
 import {NotificationsService} from 'angular2-notifications';
+import {UserService} from '../../main/users/services/user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private authService: AuthService, private router: Router, private notificationsService: NotificationsService) {
+  constructor(private authService: AuthService,
+              private router: Router,
+              private notificationsService: NotificationsService) {
   }
 
   canActivate(
@@ -33,7 +36,7 @@ export class AuthGuard implements CanActivate {
     console.log('guard logged in ', this.authService.isLoggedIn);
 
     if (this.authService.isLoggedIn) {
-      const userRole = this.authService.userRole;
+      const userRole = this.authService.loggedUser.role;
 
       if (route.data.role && route.data.role.indexOf(userRole) === -1) {
         this.notificationsService

@@ -7,11 +7,9 @@ import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import { NavigationComponent } from './shared/navigation/navigation.component';
-import {AuthService} from './shared/services/auth.service';
+import {AuthService} from './shared/auth/services/auth.service';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {UserModule} from './main/users/components/user/user.module';
-import {PostModule} from './main/posts/components/post/post.module';
 
 @NgModule({
   declarations: [
@@ -24,9 +22,7 @@ import {PostModule} from './main/posts/components/post/post.module';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     SimpleNotificationsModule.forRoot(),
-    BrowserAnimationsModule,
-    UserModule,
-    PostModule
+    BrowserAnimationsModule
   ],
   providers: [
     AuthService

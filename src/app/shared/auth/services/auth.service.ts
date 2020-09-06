@@ -2,38 +2,28 @@ import {Injectable, NgZone} from '@angular/core';
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
 import {Router} from '@angular/router';
 import {AngularFireAuth} from '@angular/fire/auth';
-import {User} from '../../main/users/models/user';
+import {User} from '../../../main/users/models/user';
 import * as firebase from 'firebase';
 import {NotificationsService} from 'angular2-notifications';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {BehaviorSubject} from 'rxjs';
 import GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
-import {firestore} from 'firebase';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  public loggedUserFromDbAuth$: Observable<firebase.User>;
   public loggedUserFromDbUsers$: BehaviorSubject<User> = new BehaviorSubject<User>({} as User);
-  public loggedUser: User = {} as User;
+  private _loggedUser: User = {} as User;
 
   constructor(
-    public afs: AngularFirestore,
     public afAuth: AngularFireAuth,
+    public afs: AngularFirestore,
     public router: Router,
     public ngZone: NgZone, // NgZone service to remove outside scope warning
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
   ) {
-
-    this.loggedUserFromDbAuth$ = new Observable<firebase.User>((subscriber) => {
-      this.afAuth.onAuthStateChanged(subscriber);
-    });
-
-    // this.loggedUserFromDbUsers$.next({} as User);
-    //
-    this.loggedUserFromDbAuth$.subscribe(
+    this.afAuth.authState.subscribe(
       (user => {
         if (user) {
           this.afs.collection('users')
@@ -43,26 +33,34 @@ export class AuthService {
               console.log('dataaa ', u.data() as User);
               this.loggedUser = u.data() as User;
               this.loggedUserFromDbUsers$.next(this.loggedUser);
+              localStorage.setItem('user', JSON.stringify(this.loggedUser));
+              JSON.parse(localStorage.getItem('user'));
             });
         } else {
           this.loggedUser = {} as User;
           this.loggedUserFromDbUsers$.next({} as User);
+          JSON.parse(localStorage.getItem('user'));
+          localStorage.setItem('user', null);
         }
       })
     );
+  }
 
-   }
 
-  // Returns true when user is logged in and email is verified
+  get loggedUser() {
+    return this._loggedUser;
+  }
+
+  set loggedUser(user) {
+    this._loggedUser = user;
+  }
+
   get isLoggedIn(): boolean {
-    return this.loggedUser.uid != null;
+    const user = JSON.parse(localStorage.getItem('user'));
+    return (user !== null && user.emailVerified !== false);
   }
 
-  get userRole() {
-    return this.loggedUser.role;
-  }
-
-  // Sign in with email/password
+  // login -> Sign in with email/password
   SignIn(email, password) {
     return this.afAuth.signInWithEmailAndPassword(email, password)
       .then((result) => {
@@ -82,13 +80,14 @@ export class AuthService {
       });
   }
 
+  // register
   SignUp(email, password, displayName, role) {
     return this.afAuth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
         /* Call the SendVerificaitonMail() function when new user sign
         up and returns promise */
         this.SendVerificationMail();
-        this.SetLoggedUser(result.user, displayName, role);
+        this.addUser(result.user, displayName, role);
       }).catch((error) => {
         this.notificationsService
           .error('Error', error.message, {
@@ -156,26 +155,10 @@ export class AuthService {
       });
   }
 
-  // add user (doc) in users collection upon registering a new user.
-  SetLoggedUser(user, displayName, role) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
-    const loggedUser: Partial<User> = {
-      uid: user.uid,
-      email: user.email,
-      emailVerified: user.emailVerified,
-      displayName,
-      role
-    };
-    return userRef.set(loggedUser, {
-      merge: true
-    });
-  }
-
   SignOut() {
     return this.afAuth.signOut().then(() => {
-      // localStorage.removeItem('user');
-      this.loggedUser = {} as User;
-      this.loggedUserFromDbUsers$.next(this.loggedUser);
+      localStorage.removeItem('user');
+      this.loggedUserFromDbUsers$.next({} as User);
       this.router.navigateByUrl('auth/login');
 
       this.notificationsService
@@ -187,6 +170,20 @@ export class AuthService {
           preventLastDuplicates: true
         });
 
+    });
+  }
+
+  addUser(user, displayName, role) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
+    const loggedUser: Partial<User> = {
+      uid: user.uid,
+      email: user.email,
+      emailVerified: user.emailVerified,
+      displayName,
+      role
+    };
+    return userRef.set(loggedUser, {
+      merge: true
     });
   }
 
