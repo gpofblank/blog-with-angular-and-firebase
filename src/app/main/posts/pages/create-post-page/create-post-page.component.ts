@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {AuthService} from '../../../../shared/auth/services/auth.service';
+import {PostService} from '../../services/post.service';
+import {AngularFirestore} from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-create-post-page',
@@ -7,9 +12,48 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreatePostPageComponent implements OnInit {
 
-  constructor() { }
+  createPostForm: FormGroup;
+  submitted = false;
 
-  ngOnInit(): void {
+  constructor(private fb: FormBuilder,
+              private router: Router,
+              private authService: AuthService,
+              private postService: PostService,
+              private afs: AngularFirestore) {
+    this.createPostForm = this.fb.group({
+      title: [null, [Validators.required]],
+      content: [null, [Validators.required]]
+    });
+  }
+
+  get title() {
+    return this.createPostForm.get('title');
+  }
+
+  get content() {
+    return this.createPostForm.get('content');
+  }
+
+  ngOnInit() {
+  }
+
+  submitForm() {
+    this.submitted = true;
+
+    if (this.createPostForm.valid) {
+      const loggedUser = this.authService.loggedUser;
+      const id = this.afs.createId();
+      const post = {
+        id,
+        title: this.title.value,
+        content: this.content.value,
+        createdAt: new Date(),
+        createdBy: loggedUser.uid,
+      };
+
+      this.postService.addPost(id, post);
+      this.router.navigateByUrl('');
+    }
   }
 
 }

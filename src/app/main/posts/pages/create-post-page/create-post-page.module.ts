@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CreatePostPageComponent } from './create-post-page.component';
 import {RouterModule, Routes} from '@angular/router';
+import {ReactiveFormsModule} from '@angular/forms';
 
 const routes: Routes = [
   {path: '', component: CreatePostPageComponent}
@@ -11,7 +12,8 @@ const routes: Routes = [
   declarations: [CreatePostPageComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    ReactiveFormsModule
   ]
 })
 export class CreatePostPageModule { }
