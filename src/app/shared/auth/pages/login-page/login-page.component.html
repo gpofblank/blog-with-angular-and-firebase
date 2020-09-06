@@ -27,10 +27,13 @@
                     placeholder="Password"
                     class="form-control mb-2"
                   />
-                  <div class="alert-danger p-1 mb-2" *ngIf="submitted && password.errors?.required">Password is
-                    required
+                  <div class="alert-danger p-1 mb-2" *ngIf="submitted && password.errors?.required">
+                    Password is required
                   </div>
-                  <button
+                  <div class="alert-danger p-1 mb-1" *ngIf="submitted && password.errors?.minlength">
+                    Min length 6
+                  </div>
+                    <button
                     class="btn btn-lg btn-primary btn-block mb-1"
                     type="submit">
                     Login
