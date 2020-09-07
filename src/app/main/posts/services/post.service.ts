@@ -19,7 +19,8 @@ export class PostService {
    * @ngdoc function
    * @description Creates a post doc on Firestore.
    * @private
-   * @param id and post
+   * @param id
+   * @param post
    * @return void
    */
   // Create

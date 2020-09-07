@@ -60,7 +60,14 @@ export class AuthService {
     return (user !== null && user.emailVerified !== false);
   }
 
-  // login -> Sign in with email/password
+  /**
+   * @ngdoc function
+   * @description Logs in a user
+   * @param email
+   * @param password
+   * @private
+   * @return promise
+   */
   SignIn(email, password) {
     return this.afAuth.signInWithEmailAndPassword(email, password)
       .then((result) => {
@@ -80,7 +87,16 @@ export class AuthService {
       });
   }
 
-  // register
+  /**
+   * @ngdoc function
+   * @description Registers a user
+   * @private
+   * @param email
+   * @param password
+   * @param displayName
+   * @param role
+   * @return promise
+   */
   SignUp(email, password, displayName, role) {
     return this.afAuth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
@@ -100,6 +116,12 @@ export class AuthService {
       });
   }
 
+  /**
+   * @ngdoc function
+   * @description Sends a verification email.
+   * @private
+   * @return promise
+   */
   SendVerificationMail() {
     return this.afAuth.currentUser.then(u => u.sendEmailVerification())
       .then(() => {
@@ -107,6 +129,13 @@ export class AuthService {
       });
   }
 
+  /**
+   * @ngdoc function
+   * @description Sends a password reset email.
+   * @private
+   * @param passwordResetEmail
+   * @return promise
+   */
   ForgotPassword(passwordResetEmail) {
     return this.afAuth.sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
@@ -130,12 +159,24 @@ export class AuthService {
       });
   }
 
+  /**
+   * @ngdoc function
+   * @description Google Authentication
+   * @private
+   * @return promise
+   */
   GoogleAuth() {
     return this.AuthLogin(new GoogleAuthProvider()).then(() => {
       this.router.navigateByUrl('');
     });
   }
 
+  /**
+   * @ngdoc function
+   * @description Authentication
+   * @private
+   * @return promise
+   */
   AuthLogin(provider) {
     return this.afAuth.signInWithPopup(provider)
       .then((result) => {
@@ -155,6 +196,12 @@ export class AuthService {
       });
   }
 
+  /**
+   * @ngdoc function
+   * @description Signs a user out.
+   * @private
+   * @return promise
+   */
   SignOut() {
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
@@ -173,6 +220,12 @@ export class AuthService {
     });
   }
 
+  /**
+   * @ngdoc function
+   * @description Local use only!!!. Adds a user to Firestore.
+   * @private
+   * @return promise
+   */
   addUser(user, displayName, role) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
     const loggedUser: Partial<User> = {
