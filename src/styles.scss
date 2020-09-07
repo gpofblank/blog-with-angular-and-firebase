@@ -9,11 +9,19 @@ p {
 }
 
 .h-100-wo-nav {
-  height: calc(100vh - 70px);
+  height: calc(100vh - 150px);
+}
+
+.height-55px {
+  height: 55px;
 }
 
 .simple-notification-wrapper {
   width: 80%!important;
+}
+
+.card-header {
+  color: #262c32;
 }
 
 .loader {
