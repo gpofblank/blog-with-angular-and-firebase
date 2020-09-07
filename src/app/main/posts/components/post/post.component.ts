@@ -37,7 +37,7 @@ export class PostComponent implements OnInit {
       }
     }).catch((error) => {
       this.notificationsService
-        .error('Error upon getting a user', '', {
+        .error('Error upon getting a user', error.message, {
           timeOut: 3000,
           showProgressBar: true,
           pauseOnHover: true,

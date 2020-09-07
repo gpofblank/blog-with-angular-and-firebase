@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {AngularFirestore} from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {NotificationsService} from 'angular2-notifications';
 import {Post} from '../models/post';
@@ -60,6 +60,20 @@ export class PostService {
    */
   getPosts(): Observable<any> {
     return this.afs.collection('posts').snapshotChanges();
+  }
+
+  /**
+   * @ngdoc function
+   * @description Gets all posts for a specific user from Firestore.
+   * Error handling to be taken care of in the respective component
+   * @private
+   * @param id
+   * @return Observable<Post[]>
+   */
+  getPostsForUser(id): Observable<Post[]> {
+    // return this.afs.collection('posts').ref.where('createdBy', '==', id).get();
+   return this.afs.collection<Post>('posts', ref => ref.where('createdBy', '==', id)).valueChanges();
+
   }
 
   /**

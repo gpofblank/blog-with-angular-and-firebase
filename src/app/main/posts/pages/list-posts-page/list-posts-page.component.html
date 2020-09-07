@@ -1,0 +1,8 @@
+<app-page-title [title]="'Posts for '" [additional]="author"></app-page-title>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <app-post *ngFor="let post of posts" [post]="post"></app-post>
+    </div>
+  </div>
+</div>

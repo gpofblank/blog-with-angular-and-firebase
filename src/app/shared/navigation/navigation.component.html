@@ -34,6 +34,9 @@
 
     <!-- admin nav -->
     <ul *ngIf="loggedUser?.uid && loggedUser?.role === 'admin'" class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link">Hello: {{loggedUser?.displayName}} </a>
+      </li>
       <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
         <a class="nav-link" routerLink="/admin">Dashboard</a>
       </li><li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">

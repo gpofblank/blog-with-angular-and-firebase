@@ -16,10 +16,15 @@ const routes: Routes = [
     loadChildren: () => import('./posts/pages/edit-post-page/edit-post-page.module').then(m => m.EditPostPageModule)
   },
   {
+    path: 'list-posts/:id',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./posts/pages/list-posts-page/list-posts-page.module').then(m => m.ListPostsPageModule)
+  },
+  {
     path: 'user-profile/:id',
     canActivate: [AuthGuard],
     loadChildren: () => import('./users/pages/user-profile-page/user-profile-page.module').then(m => m.UserProfilePageModule),
-  }
+  },
 ];
 
 @NgModule({
