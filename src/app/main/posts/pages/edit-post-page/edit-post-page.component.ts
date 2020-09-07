@@ -17,6 +17,7 @@ export class EditPostPageComponent implements OnInit {
   editPostForm: FormGroup;
   submitted = false;
   post: Post = {} as Post;
+  loading = true;
 
   constructor(private fb: FormBuilder,
               private router: Router,
@@ -30,6 +31,14 @@ export class EditPostPageComponent implements OnInit {
     this.postService.getPostById(id).then((doc) => {
       if (doc.exists) {
         this.post = doc.data() as Post;
+
+        this.editPostForm = this.fb.group({
+          title: [this.post.title, [Validators.required]],
+          content: [this.post.content, [Validators.required]]
+        });
+
+        this.loading = false;
+
       } else {
         this.notificationsService
           .error('No such post', '', {
@@ -62,12 +71,6 @@ export class EditPostPageComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.editPostForm = this.fb.group({
-      title: [this.post.title, [Validators.required]],
-      content: [this.post.content, [Validators.required]]
-    });
-
   }
 
   submitForm() {
