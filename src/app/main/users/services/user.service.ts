@@ -30,6 +30,16 @@ export class UserService {
   // }
 
   // Read
+  /**
+   * @ngdoc function
+   * @description Gets a specific user (by id) from Firestore.
+   * Error handling to be taken care of in the respective component
+   * @private
+   * @return promise
+   */
+  getUserById(id) {
+    return this.afs.collection('users').ref.doc(id).get();
+  }
 
   // Update
 

@@ -10,11 +10,13 @@ import { NavigationComponent } from './shared/navigation/navigation.component';
 import {AuthService} from './shared/auth/services/auth.service';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { PageTitleComponent } from './shared/components/page-title/page-title.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
+    PageTitleComponent,
   ],
   imports: [
     BrowserModule,

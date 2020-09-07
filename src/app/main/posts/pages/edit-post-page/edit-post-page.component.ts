@@ -82,7 +82,7 @@ export class EditPostPageComponent implements OnInit {
       };
 
       this.postService.updatePost(id, changes);
-      this.router.navigateByUrl('');
+      this.router.navigateByUrl('main');
     }
   }
 
