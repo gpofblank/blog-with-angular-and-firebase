@@ -47,11 +47,11 @@ export class CreatePostPageComponent implements OnInit {
         id,
         title: this.title.value,
         content: this.content.value,
-        createdAt: new Date(),
+        createdAt: new Date().toISOString(),
         createdBy: loggedUser.uid,
       };
 
-      this.postService.addPost(id, post);
+      this.postService.createPost(id, post);
       this.router.navigateByUrl('');
     }
   }
