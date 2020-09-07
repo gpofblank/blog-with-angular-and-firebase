@@ -77,13 +77,32 @@ export class PostService {
   /**
    * @ngdoc function
    * @description Updates a post (by id) on Firestore.
-   * @param post
+   * @param id
+   * @param changes
    * @private
    * @return void
    */
-  updatePost(post: Post): void {
+  updatePost(id, changes: Partial<Post>): void {
     // delete post.id;
-    this.afs.doc('posts/' + post.id).update(post);
+    this.afs.doc('posts/' + id).update(changes).then(() => {
+      this.notificationsService
+        .success('Woohoo!', 'Post successfully updated!', {
+          timeOut: 3000,
+          showProgressBar: true,
+          pauseOnHover: true,
+          clickToClose: true,
+          preventLastDuplicates: true
+        });
+    }).catch((error) => {
+      this.notificationsService
+        .error('Error upon updating a post', error.message, {
+          timeOut: 3000,
+          showProgressBar: true,
+          pauseOnHover: true,
+          clickToClose: true,
+          preventLastDuplicates: true
+        });
+    });
   }
 
   // Delete

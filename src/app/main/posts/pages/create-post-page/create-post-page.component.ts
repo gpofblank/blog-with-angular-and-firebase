@@ -48,6 +48,7 @@ export class CreatePostPageComponent implements OnInit {
         title: this.title.value,
         content: this.content.value,
         createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
         createdBy: loggedUser.uid,
       };
 

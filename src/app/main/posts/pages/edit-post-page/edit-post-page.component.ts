@@ -31,14 +31,11 @@ export class EditPostPageComponent implements OnInit {
     this.postService.getPostById(id).then((doc) => {
       if (doc.exists) {
         this.post = doc.data() as Post;
-
         this.editPostForm = this.fb.group({
           title: [this.post.title, [Validators.required]],
           content: [this.post.content, [Validators.required]]
         });
-
         this.loading = false;
-
       } else {
         this.notificationsService
           .error('No such post', '', {
@@ -77,17 +74,14 @@ export class EditPostPageComponent implements OnInit {
     this.submitted = true;
 
     if (this.editPostForm.valid) {
-      const loggedUser = this.authService.loggedUser;
       const id = this.post.id;
-      const post = {
-        id,
+      const changes = {
         title: this.title.value,
         content: this.content.value,
-        createdAt: new Date(),
-        createdBy: loggedUser.uid,
+        updatedAt: new Date().toISOString(),
       };
 
-      this.postService.updatePost(post);
+      this.postService.updatePost(id, changes);
       this.router.navigateByUrl('');
     }
   }
