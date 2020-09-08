@@ -9,7 +9,7 @@ p {
 }
 
 .h-100-wo-nav {
-  height: calc(100vh - 150px);
+  min-height: calc(100vh - 150px);
 }
 
 .height-55px {
