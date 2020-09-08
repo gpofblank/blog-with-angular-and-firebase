@@ -4,6 +4,8 @@ import {UserService} from '../../../users/services/user.service';
 import {Validators} from '@angular/forms';
 import {NotificationsService} from 'angular2-notifications';
 import {User} from '../../../users/models/user';
+import {AuthService} from '../../../../shared/auth/services/auth.service';
+import {PostService} from '../../services/post.service';
 
 @Component({
   selector: 'app-post',
@@ -14,8 +16,13 @@ export class PostComponent implements OnInit {
 
   @Input() post: Post;
   author: string;
+  loggedUserRole = '';
 
-  constructor(private userService: UserService, private notificationsService: NotificationsService) {
+  constructor(private userService: UserService,
+              private notificationsService: NotificationsService,
+              private authService: AuthService,
+              private postService: PostService) {
+    this.loggedUserRole = this.authService.loggedUser.role;
   }
 
   ngOnInit(): void {
@@ -47,5 +54,7 @@ export class PostComponent implements OnInit {
     });
   }
 
-
+  deletePost() {
+    this.postService.deletePost(this.post.id);
+  }
 }
