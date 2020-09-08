@@ -1,8 +1,16 @@
 <app-page-title [title]="'Home Page'"></app-page-title>
-<div class="container">
-  <div class="row">
-    <div class="col">
-      <app-post *ngFor="let post of allPosts" [post]="post"></app-post>
+<div *ngIf="!loading">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <app-post *ngFor="let post of allPosts" [post]="post"></app-post>
+      </div>
     </div>
+  </div>
+</div>
+
+<div *ngIf="loading">
+  <div class="d-flex align-items-center h-100-wo-nav">
+    <div class="loader">Loading...</div>
   </div>
 </div>

@@ -4,8 +4,14 @@ import {AuthGuard} from './shared/guards/auth.guard';
 
 
 const routes: Routes = [
-  {path: '', loadChildren: () => import('./main/home-page/home-page.module').then(m => m.HomePageModule)},
-  {path: 'auth', loadChildren: () => import('./shared/auth/auth.module').then(m => m.AuthModule)},
+  {
+    path: '',
+    loadChildren: () => import('./main/home-page/home-page.module').then(m => m.HomePageModule)
+  },
+  {
+    path: 'auth',
+    loadChildren: () => import('./shared/auth/auth.module').then(m => m.AuthModule)
+  },
   {
     path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
     canActivate: [AuthGuard],
@@ -13,8 +19,14 @@ const routes: Routes = [
       role: 'admin'
     }
   },
-  {path: 'main', loadChildren: () => import('./main/main.module').then(m => m.MainModule)},
-  {path: '**', redirectTo: ''}
+  {
+    path: 'main',
+    loadChildren: () => import('./main/main.module').then(m => m.MainModule)
+  },
+  {
+    path: '**',
+    redirectTo: ''
+  }
 ];
 
 @NgModule({

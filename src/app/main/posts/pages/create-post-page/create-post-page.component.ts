@@ -22,7 +22,7 @@ export class CreatePostPageComponent implements OnInit {
               private afs: AngularFirestore) {
     this.createPostForm = this.fb.group({
       title: [null, [Validators.required]],
-      content: [null, [Validators.required]]
+      content: [null, [Validators.required]],
     });
   }
 

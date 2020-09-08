@@ -3,31 +3,48 @@ import {User} from '../models/user';
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
 import {BehaviorSubject} from 'rxjs';
 import {AngularFireAuth} from '@angular/fire/auth';
+import {NotificationsService} from 'angular2-notifications';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) {
+  constructor(private afAuth: AngularFireAuth,
+              private afs: AngularFirestore,
+              private notificationsService: NotificationsService) {
   }
 
-  // in case info for the currently logged user is needed, feel free to subscribe to -> authService.loggedUserFromDbUsers$
+  /* in case info for the currently logged user is needed, feel free
+  ** to subscribe to -> authService.loggedUserFromDbUsers$ or use local storage
+  */
 
   // Create
-  // addUser(user, displayName, role) {
-  //   const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
-  //   const loggedUser: Partial<User> = {
-  //     uid: user.uid,
-  //     email: user.email,
-  //     emailVerified: user.emailVerified,
-  //     displayName,
-  //     role
-  //   };
-  //   return userRef.set(loggedUser, {
-  //     merge: true
-  //   });
-  // }
+  createUser(id, user): void {
+    this.afs.collection('users')
+      .doc(id)
+      .set({
+        ...user
+      }).then(() => {
+      this.notificationsService
+        .success('Woohoo!', 'Successfully created a user!', {
+          timeOut: 3000,
+          showProgressBar: true,
+          pauseOnHover: true,
+          clickToClose: true,
+          preventLastDuplicates: true
+        });
+    }).catch((error) => {
+      this.notificationsService
+        .error('Error upon creating a user', error.message, {
+          timeOut: 3000,
+          showProgressBar: true,
+          pauseOnHover: true,
+          clickToClose: true,
+          preventLastDuplicates: true
+        });
+    });
+  }
 
   // Read
   /**

@@ -4,10 +4,13 @@ export interface User {
   displayName: string;
   photoURL: string;
   emailVerified: boolean;
-  role: Role;
+  role: Roles;
+  createdAt: string;
+  updatedAt: string;
+  createdBy: string;
 }
 
-export enum Role {
+export enum Roles {
   admin = 'admin',
   user = 'user',
 }

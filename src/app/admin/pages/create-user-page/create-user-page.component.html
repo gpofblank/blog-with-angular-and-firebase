@@ -1,2 +1,54 @@
-<app-page-title [title]="'Create user'"></app-page-title>
-<p>create-user-page works!</p>
+<app-page-title [title]="'Create a user'"></app-page-title>
+<div class="d-flex align-items-center h-100-wo-nav">
+  <div class="container pt-3">
+    <div class="row justify-content-sm-center">
+      <div class="col-sm-10 col-md-8">
+        <div class="card border-info">
+          <div class="card-header">Create a user</div>
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-md-5 text-center mb-1">
+                <img src="https://placeimg.com/128/128/nature">
+              </div>
+              <div class="col-md-7">
+                <form [formGroup]="createUserForm" (ngSubmit)="submitForm()">
+                  <input
+                    type="text"
+                    formControlName="displayName"
+                    placeholder="Display name goes here"
+                    class="form-control mb-2"
+                  />
+                  <div class="alert-danger p-1 mb-1" *ngIf="submitted && displayName.errors?.required">Display name is required</div>
+                  <input
+                    type="email"
+                    formControlName="email"
+                    placeholder="Email goes here"
+                    class="form-control mb-2"
+                  />
+                  <div class="alert-danger p-1 mb-1" *ngIf="submitted && email.errors?.required">Email is required</div>
+                  <div class="alert-danger p-1 mb-1" *ngIf="submitted && email.errors?.email">Email needs to look like an email</div>
+                  <select class="custom-select form-control mb-2"
+                          formControlName="role"
+                  >
+                    <option [ngValue]="null" disabled>Select a role</option>
+                    <option *ngFor="let role of roles" [ngValue]="role.val">
+                      {{ role.desc }}
+                    </option>
+                  </select>
+                  <div class="alert-danger p-1 mb-2" *ngIf="submitted && role.errors?.required">
+                    Role is required
+                  </div>
+                  <button
+                    class="btn btn-lg btn-primary btn-block mb-1"
+                    type="submit">
+                    Create User
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

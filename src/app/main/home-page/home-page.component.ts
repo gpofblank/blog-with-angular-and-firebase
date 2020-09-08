@@ -9,10 +9,12 @@ import {PostService} from '../posts/services/post.service';
 })
 export class HomePageComponent implements OnInit {
   allPosts: Post[];
+  loading = true;
 
   constructor(private postService: PostService) {
     this.postService.getPosts().subscribe((data) => {
       this.allPosts = data.map(p => {
+        this.loading = false;
         return {...p.payload.doc.data()} as Post;
       });
     });
