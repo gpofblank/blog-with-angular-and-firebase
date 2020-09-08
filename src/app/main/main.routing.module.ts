@@ -5,6 +5,7 @@ import {AuthGuard} from '../shared/guards/auth.guard';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: () => import('./home-page/home-page.module').then(m => m.HomePageModule)},
+  {path: '/main', pathMatch: 'full', loadChildren: () => import('./home-page/home-page.module').then(m => m.HomePageModule)},
   {
     path: 'create-post',
     canActivate: [AuthGuard],

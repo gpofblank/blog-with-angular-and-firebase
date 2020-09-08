@@ -18,7 +18,7 @@ import {UserService} from '../../main/users/services/user.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class NotAllowedForLoggedUsersGuard implements CanActivate {
 
   constructor(private authService: AuthService,
               private router: Router,
@@ -34,28 +34,14 @@ export class AuthGuard implements CanActivate {
 
   checkUserLogin(route: ActivatedRouteSnapshot, url: any): boolean {
 
-    if (this.authService.isLoggedIn) {
-      const userRole = this.authService.loggedUser.role;
-
-      if (route.data.role && route.data.role.indexOf(userRole) === -1) {
-        this.notificationsService
-          .warn('You don\'t have a permission to access this page!', '', {
-            timeOut: 3000,
-            showProgressBar: true,
-            pauseOnHover: true,
-            clickToClose: true,
-            preventLastDuplicates: true
-          });
-        return false;
-      }
-
+    if (!this.authService.isLoggedIn) {
       return true;
     }
 
     // this.router.navigateByUrl('/');
 
     this.notificationsService
-      .warn('This page requires you to be logged in!', '', {
+      .warn('This page is not available for logged in users!', '', {
         timeOut: 3000,
         showProgressBar: true,
         pauseOnHover: true,
