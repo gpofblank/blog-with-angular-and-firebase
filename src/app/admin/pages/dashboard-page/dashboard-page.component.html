@@ -4,8 +4,8 @@
 
     <div class="col-sm-6 col-lg-6 mb-1 d-flex justify-content-center justify-content-sm-end mh-200px">
       <div routerLink="/admin/create-user"
-           (mouseover)="showCUBody=true"
-           (mouseout)="showCUBody=false"
+           (mouseenter)="showCUBody=true"
+           (mouseleave)="showCUBody=false"
            class="card text-white bg-success mb-1 w-100 h-100 pointer" style="max-width: 22rem;">
         <div class="card-header text-white">Create User</div>
         <div *ngIf="showCUBody" class="card-body" [@DivInOut]>
@@ -16,7 +16,7 @@
 
     <div class="col-sm-6 col-lg-6 mb-1 d-flex justify-content-center justify-content-sm-start mh-200px">
       <div class="card text-dark bg-white mb-1 w-100 h-100 pointer" style="max-width: 22rem;">
-        <div (mouseover)="showUUBody=true"
+        <div (mouseenter)="showUUBody=true"
              (mouseleave)="showUUBody=false"
              class="card-header text-dark">Update user</div>
         <div *ngIf="showUUBody" class="card-body" [@DivInOut]>
@@ -27,8 +27,8 @@
 
     <div class="col-sm-6 col-lg-6 mb-1 d-flex justify-content-center justify-content-sm-end mh-200px">
       <div class="card text-white bg-warning mb-1 w-100 h-100 pointer" style="max-width: 22rem;">
-        <div (mouseover)="showLAUBody=true"
-             (mouseout)="showLAUBody=false"
+        <div (mouseenter)="showLAUBody=true"
+             (mouseleave)="showLAUBody=false"
              class="card-header text-white">List all users</div>
         <div *ngIf="showLAUBody" class="card-body" [@DivInOut]>
           <h5 class="card-title">Lists all users</h5>
@@ -38,8 +38,8 @@
 
     <div class="col-sm-6 col-lg-6 mb-1 d-flex justify-content-center justify-content-sm-start mh-200px">
       <div routerLink="/main" class="card text-white bg-info mb-1 w-100 h-100 pointer" style="max-width: 22rem;">
-        <div (mouseover)="showSAPBody=true"
-             (mouseout)="showSAPBody=false"
+        <div (mouseenter)="showSAPBody=true"
+             (mouseleave)="showSAPBody=false"
              class="card-header text-white">See all posts</div>
         <div *ngIf="showSAPBody" class="card-body" [@DivInOut]>
           <h5 class="card-title">Lists all posts</h5>
