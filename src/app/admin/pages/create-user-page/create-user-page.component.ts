@@ -26,7 +26,6 @@ export class CreateUserPageComponent implements OnInit {
               private userService: UserService,
               private afs: AngularFirestore) {
     this.createUserForm = this.fb.group({
-
       displayName: [null, [Validators.required]],
       email: [null, [Validators.required, Validators.email]],
       role: [null, [Validators.required]]

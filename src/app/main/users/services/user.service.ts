@@ -58,6 +58,17 @@ export class UserService {
     return this.afs.collection('users').ref.doc(id).get();
   }
 
+  /**
+   * @ngdoc function
+   * @description Gets all users from Firestore.
+   * Error handling to be taken care of in the respective component
+   * @private
+   * @return promise
+   */
+  getAllUsersOnce() {
+    return this.afs.collection('users').ref.get();
+  }
+
   // Update
 
   // Delete
