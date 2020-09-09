@@ -71,10 +71,11 @@ export class ModalComponent implements OnInit {
     if (this.genericForm.valid) {
       const id = this.user.value;
 
-      this.userService.getUserById(id).then((u) => {
-        const user = u.data() as User;
-        this.router.navigateByUrl('/admin/edit-user/' + user.uid);
-      }).catch((error) => {
+      this.userService.getUserById(id)
+        .then((u) => {
+          const user = u.data() as User;
+          this.router.navigateByUrl('/admin/edit-user/' + user.uid);
+        }).catch((error) => {
         this.notificationsService
           .error('Error upon getting a user', error.message, {
             timeOut: 3000,

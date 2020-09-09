@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Post} from '../../models/post';
 import {PostService} from '../../services/post.service';
 import {ActivatedRoute} from '@angular/router';
 import {UserService} from '../../../users/services/user.service';
 import {NotificationsService} from 'angular2-notifications';
-import {Observable} from 'rxjs';
 import {User} from '../../../users/models/user';
 
 @Component({
@@ -31,10 +30,11 @@ export class ListPostsPageComponent implements OnInit {
       this.posts = posts;
     });
 
-    this.userService.getUserById(id).then((u) => {
-      const user = u.data() as User;
-      this.author = user.displayName;
-    }).catch((error) => {
+    this.userService.getUserById(id)
+      .then((u) => {
+        const user = u.data() as User;
+        this.author = user.displayName;
+      }).catch((error) => {
       this.notificationsService
         .error('Error upon getting a user', error.message, {
           timeOut: 3000,

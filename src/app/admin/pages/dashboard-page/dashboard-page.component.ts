@@ -91,10 +91,11 @@ export class DashboardPageComponent implements OnInit {
       const id = this.user.value;
       document.getElementById('closeSelectUserModal').click();
 
-      this.userService.getUserById(id).then((u) => {
-        const user = u.data() as User;
-        this.router.navigateByUrl('/admin/edit-user/' + user.uid);
-      }).catch((error) => {
+      this.userService.getUserById(id)
+        .then((u) => {
+          const user = u.data() as User;
+          this.router.navigateByUrl('/admin/edit-user/' + user.uid);
+        }).catch((error) => {
         this.notificationsService
           .error('Error upon getting a user', error.message, {
             timeOut: 3000,

@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Post} from '../../models/post';
 import {UserService} from '../../../users/services/user.service';
-import {Validators} from '@angular/forms';
 import {NotificationsService} from 'angular2-notifications';
 import {User} from '../../../users/models/user';
 import {AuthService} from '../../../../shared/auth/services/auth.service';
@@ -26,23 +25,24 @@ export class PostComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getUserById(this.post.createdBy).then((doc) => {
-      if (doc.exists) {
-        const user = doc.data() as User;
-        this.author = user.displayName;
-      } else {
-        // nothing as of now...
+    this.userService.getUserById(this.post.createdBy)
+      .then((doc) => {
+        if (doc.exists) {
+          const user = doc.data() as User;
+          this.author = user.displayName;
+        } else {
+          // nothing as of now...
 
-        // this.notificationsService
-        //   .error('No such user', '', {
-        //     timeOut: 3000,
-        //     showProgressBar: true,
-        //     pauseOnHover: true,
-        //     clickToClose: true,
-        //     preventLastDuplicates: true
-        //   });
-      }
-    }).catch((error) => {
+          // this.notificationsService
+          //   .error('No such user', '', {
+          //     timeOut: 3000,
+          //     showProgressBar: true,
+          //     pauseOnHover: true,
+          //     clickToClose: true,
+          //     preventLastDuplicates: true
+          //   });
+        }
+      }).catch((error) => {
       this.notificationsService
         .error('Error upon getting a user', error.message, {
           timeOut: 3000,
