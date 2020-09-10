@@ -23,7 +23,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
     if (!!this.afAuth.currentUser) {
       this.loggedUserSub = this.authService.loggedUserFromDbUsers$.subscribe((user) => {
-        // this.loggedUser = this.afs.collection('users').doc(user.uid).get().subscribe(rec => rec.data())
         if (user) {
           this.loggedUser = user;
         } else {
@@ -46,8 +45,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // if (this.loggedUserSub) {
-    //   this.loggedUserSub.unsubscribe();
-    // }
+    if (this.loggedUserSub) {
+      this.loggedUserSub.unsubscribe();
+    }
   }
 }
