@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {User} from '../../models/user';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-user',
@@ -9,10 +10,16 @@ import {User} from '../../models/user';
 export class UserComponent implements OnInit {
 
   @Input() user: User;
-  
-  constructor() { }
+  loggedUser = {} as User;
+
+  constructor(private userService: UserService) {
+    this.loggedUser = JSON.parse(localStorage.getItem('user'));
+  }
 
   ngOnInit(): void {
   }
 
+  onRemoveUser() {
+    this.userService.deleteUser(this.user.uid);
+  }
 }

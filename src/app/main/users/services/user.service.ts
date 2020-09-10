@@ -112,4 +112,33 @@ export class UserService {
   }
 
   // Delete
+  /**
+   * @ngdoc function
+   * @description Deletes a user (by id) on Firestore.
+   * @param userId
+   * @private
+   * @return void
+   */
+  deleteUser(userId: string) {
+    this.afs.doc('users/' + userId).delete().then(() => {
+      this.notificationsService
+        .success('Woohoo!', 'User successfully deleted!', {
+          timeOut: 3000,
+          showProgressBar: true,
+          pauseOnHover: true,
+          clickToClose: true,
+          preventLastDuplicates: true
+        });
+    }).catch((error) => {
+      this.notificationsService
+        .error('Error upon deleting a user', error.message, {
+          timeOut: 3000,
+          showProgressBar: true,
+          pauseOnHover: true,
+          clickToClose: true,
+          preventLastDuplicates: true
+        });
+    });
+
+  }
 }

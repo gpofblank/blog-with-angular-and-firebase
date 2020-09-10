@@ -1,7 +1,8 @@
 <div class="content m-3">
   <div class="card">
     <div class="firstinfo">
-      <img src="{{user.photoURL || 'https://pixabay.com/bg/vectors/%D0%B0%D0%B2%D0%B0%D1%82%D0%B0%D1%80-%D0%BA%D0%BB%D1%8E%D0%BD-%D1%87%D0%B5%D1%80%D0%B5%D0%BD-%D1%81%D0%BB%D0%B0%D0%B4%D1%8A%D0%BA-%D0%B5%D0%BC%D0%BE%D1%86%D0%B8%D1%8F-1295429/'}}"/>
+      <img
+        src="{{user.photoURL || 'https://pixabay.com/bg/vectors/%D0%B0%D0%B2%D0%B0%D1%82%D0%B0%D1%80-%D0%BA%D0%BB%D1%8E%D0%BD-%D1%87%D0%B5%D1%80%D0%B5%D0%BD-%D1%81%D0%BB%D0%B0%D0%B4%D1%8A%D0%BA-%D0%B5%D0%BC%D0%BE%D1%86%D0%B8%D1%8F-1295429/'}}"/>
       <div class="profileinfo">
         <h1 class="text-dark">Username: {{user.displayName}}</h1>
         <h3>Role: {{user.role}}</h3>
@@ -10,8 +11,16 @@
     </div>
   </div>
   <div class="firstinfo d-flex align-items-center justify-content-center pt-2">
-    <button class="btn btn-info" routerLink="/main/list-posts/{{user.uid}}">Show posts for {{user.displayName}}</button>
+    <button *ngIf="loggedUser.role === 'admin'"
+            class="btn btn-info m-1"
+            (click)="onRemoveUser()">
+      Delete {{user.displayName}}
+    </button>
+    <button
+      class="btn btn-info"
+      routerLink="/main/list-posts/{{user.uid}}">
+      Show posts for {{user.displayName}}
+    </button>
   </div>
 </div>
-
 

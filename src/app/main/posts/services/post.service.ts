@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import {AngularFirestore} from '@angular/fire/firestore';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {NotificationsService} from 'angular2-notifications';
 import {Post} from '../models/post';
@@ -72,7 +72,7 @@ export class PostService {
    */
   getPostsForUser(id): Observable<Post[]> {
     // return this.afs.collection('posts').ref.where('createdBy', '==', id).get();
-   return this.afs.collection<Post>('posts', ref => ref.where('createdBy', '==', id)).valueChanges();
+    return this.afs.collection<Post>('posts', ref => ref.where('createdBy', '==', id)).valueChanges();
 
   }
 
@@ -128,7 +128,25 @@ export class PostService {
    * @return void
    */
   deletePost(postId: string) {
-    this.afs.doc('posts/' + postId).delete();
-  }
+    this.afs.doc('posts/' + postId).delete().then(() => {
+      this.notificationsService
+        .success('Woohoo!', 'Post successfully deleted!', {
+          timeOut: 3000,
+          showProgressBar: true,
+          pauseOnHover: true,
+          clickToClose: true,
+          preventLastDuplicates: true
+        });
+    }).catch((error) => {
+      this.notificationsService
+        .error('Error upon deleting a post', error.message, {
+          timeOut: 3000,
+          showProgressBar: true,
+          pauseOnHover: true,
+          clickToClose: true,
+          preventLastDuplicates: true
+        });
+    });
+}
 
 }
