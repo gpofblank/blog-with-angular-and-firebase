@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
-import {User} from '../models/user';
-import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
-import {BehaviorSubject} from 'rxjs';
+import {AngularFirestore} from '@angular/fire/firestore';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {NotificationsService} from 'angular2-notifications';
+import {User} from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -70,6 +69,35 @@ export class UserService {
   }
 
   // Update
+  /**
+   * @ngdoc function
+   * @description Updates a user (by id) on Firestore.
+   * @param id
+   * @param changes
+   * @private
+   * @return void
+   */
+  updateUser(id, changes: Partial<User>): void {
+    this.afs.doc('users/' + id).update(changes).then(() => {
+      this.notificationsService
+        .success('Woohoo!', 'User successfully updated!', {
+          timeOut: 3000,
+          showProgressBar: true,
+          pauseOnHover: true,
+          clickToClose: true,
+          preventLastDuplicates: true
+        });
+    }).catch((error) => {
+      this.notificationsService
+        .error('Error upon updating a user', error.message, {
+          timeOut: 3000,
+          showProgressBar: true,
+          pauseOnHover: true,
+          clickToClose: true,
+          preventLastDuplicates: true
+        });
+    });
+  }
 
   // Delete
 }

@@ -68,7 +68,7 @@
           <p class="text-dark">Select a user from the list below</p>
         </div>
 
-        <form [formGroup]="selectUserForm" (ngSubmit)="submitForm()">
+        <form class="mx-4" [formGroup]="selectUserForm" (ngSubmit)="submitForm()">
           <select class="custom-select form-control mb-2"
                   formControlName="user"
           >
