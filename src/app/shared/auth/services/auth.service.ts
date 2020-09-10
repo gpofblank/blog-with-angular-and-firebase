@@ -21,31 +21,38 @@ export class AuthService {
     public afs: AngularFirestore,
     public router: Router,
     public ngZone: NgZone, // NgZone service to remove outside scope warning
-    private notificationsService: NotificationsService,
-  ) {
-    this.afAuth.authState.subscribe(
-      (user => {
-        if (user) {
-          this.afs.collection('users')
-            .doc(user.uid)
-            .ref.get()
-            .then((u) => {
-              console.log('dataaa ', u.data() as User);
-              this.loggedUser = u.data() as User;
-              this.loggedUserFromDbUsers$.next(this.loggedUser);
-              localStorage.setItem('user', JSON.stringify(this.loggedUser));
-              JSON.parse(localStorage.getItem('user'));
-            });
-        } else {
-          this.loggedUser = {} as User;
-          this.loggedUserFromDbUsers$.next({} as User);
-          JSON.parse(localStorage.getItem('user'));
-          localStorage.setItem('user', null);
-        }
-      })
-    );
-  }
+    private notificationsService: NotificationsService) {
 
+    const loggedUserFromLocalStorage = JSON.parse(localStorage.getItem('user'));
+    console.log('logged user ', loggedUserFromLocalStorage);
+
+    if (loggedUserFromLocalStorage) {
+      this.loggedUser = loggedUserFromLocalStorage;
+      this.loggedUserFromDbUsers$.next(this.loggedUser);
+    } else {
+      this.afAuth.authState.subscribe(
+        (user => {
+          if (user) {
+            this.afs.collection('users')
+              .doc(user.uid)
+              .ref.get()
+              .then((u) => {
+                console.log('dataaa ', u.data() as User);
+                this.loggedUser = u.data() as User;
+                this.loggedUserFromDbUsers$.next(this.loggedUser);
+                localStorage.setItem('user', JSON.stringify(this.loggedUser));
+                JSON.parse(localStorage.getItem('user'));
+              });
+          } else {
+            this.loggedUser = {} as User;
+            this.loggedUserFromDbUsers$.next({} as User);
+            JSON.parse(localStorage.getItem('user'));
+            localStorage.setItem('user', null);
+          }
+        })
+      );
+    }
+  }
 
   get loggedUser() {
     return this._loggedUser;
@@ -57,7 +64,8 @@ export class AuthService {
 
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
-    return (user !== null && user.emailVerified !== false);
+    return (user !== null);
+    // return (user !== null && user.emailVerified !== false);
   }
 
   /**

@@ -8,21 +8,14 @@ import {Subscription} from 'rxjs';
   templateUrl: './user-profile-page.component.html',
   styleUrls: ['./user-profile-page.component.scss']
 })
-export class UserProfilePageComponent implements OnInit, OnDestroy {
+export class UserProfilePageComponent implements OnInit {
   user: User;
-  userSub: Subscription;
 
   constructor(private authService: AuthService) {
-    this.userSub = this.authService.loggedUserFromDbUsers$.subscribe((u) => this.user = u);
+    this.user = JSON.parse(localStorage.getItem('user'));
   }
 
   ngOnInit(): void {
-  }
-
-  ngOnDestroy() {
-    if (this.userSub) {
-      this.userSub.unsubscribe();
-    }
   }
 
 }

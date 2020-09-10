@@ -20,14 +20,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
               private notificationsService: NotificationsService,
               private afAuth: AngularFireAuth,
               private afs: AngularFirestore) {
-    // this.loggedUserSub = this.afAuth.user.subscribe((user) => {
-    //   if (user) {
-    //     console.log('from navigation -> ', user);
-    //     this.loggedUser = user;
-    //   } else {
-    //     this.loggedUser = {} as User;
-    //   }
-    // });
 
     if (!!this.afAuth.currentUser) {
       this.loggedUserSub = this.authService.loggedUserFromDbUsers$.subscribe((user) => {
