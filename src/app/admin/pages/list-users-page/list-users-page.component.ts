@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {User} from '../../../main/users/models/user';
+import {UserService} from '../../../main/users/services/user.service';
 
 @Component({
   selector: 'app-list-users-page',
@@ -6,8 +8,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./list-users-page.component.scss']
 })
 export class ListUsersPageComponent implements OnInit {
+  allUsers: User[];
+  loading = true;
 
-  constructor() { }
+  constructor(private userService: UserService) {
+    this.userService.getUsers().subscribe((data) => {
+      this.allUsers = data.map(p => {
+        this.loading = false;
+        return {...p.payload.doc.data()} as User;
+      });
+    });
+  }
 
   ngOnInit(): void {
   }

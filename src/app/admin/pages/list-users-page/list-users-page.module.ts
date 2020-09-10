@@ -4,6 +4,7 @@ import { ListUsersPageComponent } from './list-users-page.component';
 import {RouterModule, Routes} from '@angular/router';
 import {CreatePostPageComponent} from '../../../main/posts/pages/create-post-page/create-post-page.component';
 import {PageTitleModule} from '../../../shared/components/page-title/page-title.module';
+import {UserModule} from '../../../main/users/components/user/user.module';
 
 const routes: Routes = [
   {path: '', component: ListUsersPageComponent}
@@ -14,7 +15,8 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    PageTitleModule
+    PageTitleModule,
+    UserModule
   ]
 })
 export class ListUsersPageModule { }

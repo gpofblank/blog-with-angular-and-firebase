@@ -3,6 +3,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {NotificationsService} from 'angular2-notifications';
 import {User} from '../models/user';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +47,17 @@ export class UserService {
   }
 
   // Read
+  /**
+   * @ngdoc function
+   * @description Gets all users from Firestore.
+   * Error handling to be taken care of in the respective component
+   * @private
+   * @return observable
+   */
+  getUsers(): Observable<any> {
+    return this.afs.collection('users').snapshotChanges();
+  }
+
   /**
    * @ngdoc function
    * @description Gets a specific user (by id) from Firestore.
