@@ -3,7 +3,9 @@
   <div class="container">
     <div class="row">
       <div class="col">
-        <app-post *ngFor="let post of allPosts" [post]="post"></app-post>
+        <app-post *ngFor="let post of allPosts" [post]="post"
+                  (delete)="onDeletePost(post)"
+        ></app-post>
       </div>
     </div>
   </div>

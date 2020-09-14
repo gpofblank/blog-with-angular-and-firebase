@@ -44,6 +44,10 @@ export class ListPostsPageComponent implements OnInit, OnDestroy {
 
   }
 
+  onDeletePost(post) {
+    this.postService.deletePost(post.id);
+  }
+
   ngOnDestroy() {
     if (this.getPostsForUserSub){
       this.getPostsForUserSub.unsubscribe();

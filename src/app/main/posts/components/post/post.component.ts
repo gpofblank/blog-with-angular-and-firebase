@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Post} from '../../models/post';
 import {UserService} from '../../../users/services/user.service';
 import {NotificationsService} from 'angular2-notifications';
@@ -15,14 +15,15 @@ import {defaultAlertSettings} from '../../../../shared/alert.settings';
 export class PostComponent implements OnInit {
 
   @Input() post: Post;
+  @Output() delete: EventEmitter<any> = new EventEmitter<any>();
   author: string;
-  loggedUserRole = '';
+  loggedUser = {} as User;
 
   constructor(private userService: UserService,
               private notificationsService: NotificationsService,
               private authService: AuthService,
               private postService: PostService) {
-    this.loggedUserRole = this.authService.loggedUser.role;
+    this.loggedUser = this.authService.loggedUser;
   }
 
   ngOnInit(): void {
@@ -38,7 +39,7 @@ export class PostComponent implements OnInit {
     });
   }
 
-  onDeletePost() {
-    this.postService.deletePost(this.post.id);
+  onDeletePost(post) {
+    this.delete.emit(post);
   }
 }
