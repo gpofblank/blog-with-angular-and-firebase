@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {User} from '../../models/user';
 import {UserService} from '../../services/user.service';
 
@@ -10,6 +10,7 @@ import {UserService} from '../../services/user.service';
 export class UserComponent implements OnInit {
 
   @Input() user: User;
+  @Output() delete: EventEmitter<any> = new EventEmitter<any>();
   loggedUser = {} as User;
 
   constructor(private userService: UserService) {
@@ -19,7 +20,7 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onRemoveUser() {
-    this.userService.deleteUser(this.user.uid);
+  onRemoveUser(user) {
+    this.delete.emit(user);
   }
 }

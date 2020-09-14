@@ -45,7 +45,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   }
 
-  onDeletePost(post) {
+  deletePost(post) {
     this.postService.deletePost(post.id);
   }
 

@@ -31,4 +31,7 @@ export class ListUsersPageComponent implements OnInit, OnDestroy {
     }
   }
 
+  deleteUser(user: User) {
+    this.userService.deleteUser(user.uid);
+  }
 }

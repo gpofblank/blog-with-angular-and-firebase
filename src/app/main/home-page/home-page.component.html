@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col">
         <app-post *ngFor="let post of allPosts" [post]="post"
-                  (delete)="onDeletePost(post)"
+                  (delete)="deletePost(post)"
         ></app-post>
       </div>
     </div>

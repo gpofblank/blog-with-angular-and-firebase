@@ -44,7 +44,7 @@ export class ListPostsPageComponent implements OnInit, OnDestroy {
 
   }
 
-  onDeletePost(post) {
+  deletePost(post) {
     this.postService.deletePost(post.id);
   }
 
