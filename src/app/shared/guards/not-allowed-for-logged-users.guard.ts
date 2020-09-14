@@ -14,6 +14,7 @@ import {Observable} from 'rxjs';
 import {AuthService} from '../auth/services/auth.service';
 import {NotificationsService} from 'angular2-notifications';
 import {UserService} from '../../main/users/services/user.service';
+import {defaultAlertSettings} from '../alert.settings';
 
 @Injectable({
   providedIn: 'root'
@@ -41,13 +42,7 @@ export class NotAllowedForLoggedUsersGuard implements CanActivate {
     // this.router.navigateByUrl('/');
 
     this.notificationsService
-      .warn('This page is not available for logged in users!', '', {
-        timeOut: 3000,
-        showProgressBar: true,
-        pauseOnHover: true,
-        clickToClose: true,
-        preventLastDuplicates: true
-      });
+      .warn('This page is not available for logged in users!', '', defaultAlertSettings);
 
     return false;
   }

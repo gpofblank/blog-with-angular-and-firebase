@@ -5,6 +5,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {UserService} from '../../../main/users/services/user.service';
 import {Router} from '@angular/router';
 import {NotificationsService} from 'angular2-notifications';
+import {defaultAlertSettings} from '../../alert.settings';
 
 @Component({
   selector: 'app-modal',
@@ -45,13 +46,7 @@ export class ModalComponent implements OnInit {
           console.log(this.users);
         }).catch((error) => {
           this.notificationsService
-            .error('Error upon getting users', error.message, {
-              timeOut: 3000,
-              showProgressBar: true,
-              pauseOnHover: true,
-              clickToClose: true,
-              preventLastDuplicates: true
-            });
+            .error('Error upon getting users', error.message, defaultAlertSettings);
         });
       }
     }
@@ -77,13 +72,7 @@ export class ModalComponent implements OnInit {
           this.router.navigateByUrl('/admin/edit-user/' + user.uid);
         }).catch((error) => {
         this.notificationsService
-          .error('Error upon getting a user', error.message, {
-            timeOut: 3000,
-            showProgressBar: true,
-            pauseOnHover: true,
-            clickToClose: true,
-            preventLastDuplicates: true
-          });
+          .error('Error upon getting a user', error.message, defaultAlertSettings);
       });
     }
   }

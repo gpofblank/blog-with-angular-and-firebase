@@ -6,6 +6,7 @@ import {UserService} from '../../../main/users/services/user.service';
 import {Router} from '@angular/router';
 import {NotificationsService} from 'angular2-notifications';
 import {User} from '../../../main/users/models/user';
+import {defaultAlertSettings} from '../../../shared/alert.settings';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -67,13 +68,7 @@ export class DashboardPageComponent implements OnInit {
       this.users = data.docs.map(user => user.data() as User);
     }).catch((error) => {
       this.notificationsService
-        .error('Error upon getting users', error.message, {
-          timeOut: 3000,
-          showProgressBar: true,
-          pauseOnHover: true,
-          clickToClose: true,
-          preventLastDuplicates: true
-        });
+        .error('Error upon getting users', error.message, defaultAlertSettings);
     });
   }
 
@@ -97,13 +92,7 @@ export class DashboardPageComponent implements OnInit {
           this.router.navigateByUrl('/admin/edit-user/' + user.uid);
         }).catch((error) => {
         this.notificationsService
-          .error('Error upon getting a user', error.message, {
-            timeOut: 3000,
-            showProgressBar: true,
-            pauseOnHover: true,
-            clickToClose: true,
-            preventLastDuplicates: true
-          });
+          .error('Error upon getting a user', error.message, defaultAlertSettings);
       });
     }
   }

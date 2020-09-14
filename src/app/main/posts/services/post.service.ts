@@ -4,6 +4,7 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import {NotificationsService} from 'angular2-notifications';
 import {Post} from '../models/post';
 import {Observable} from 'rxjs';
+import {defaultAlertSettings} from '../../../shared/alert.settings';
 
 @Injectable({
   providedIn: 'root'
@@ -31,22 +32,10 @@ export class PostService {
         ...post
       }).then(() => {
       this.notificationsService
-        .success('Woohoo!', 'Successfully created a post!', {
-          timeOut: 3000,
-          showProgressBar: true,
-          pauseOnHover: true,
-          clickToClose: true,
-          preventLastDuplicates: true
-        });
+        .success('Woohoo!', 'Successfully created a post!', defaultAlertSettings);
     }).catch((error) => {
       this.notificationsService
-        .error('Error upon creating a post', error.message, {
-          timeOut: 3000,
-          showProgressBar: true,
-          pauseOnHover: true,
-          clickToClose: true,
-          preventLastDuplicates: true
-        });
+        .error('Error upon creating a post', error.message, defaultAlertSettings);
     });
   }
 
@@ -100,22 +89,10 @@ export class PostService {
     // delete post.id;
     this.afs.doc('posts/' + id).update(changes).then(() => {
       this.notificationsService
-        .success('Woohoo!', 'Post successfully updated!', {
-          timeOut: 3000,
-          showProgressBar: true,
-          pauseOnHover: true,
-          clickToClose: true,
-          preventLastDuplicates: true
-        });
+        .success('Woohoo!', 'Post successfully updated!', defaultAlertSettings);
     }).catch((error) => {
       this.notificationsService
-        .error('Error upon updating a post', error.message, {
-          timeOut: 3000,
-          showProgressBar: true,
-          pauseOnHover: true,
-          clickToClose: true,
-          preventLastDuplicates: true
-        });
+        .error('Error upon updating a post', error.message, defaultAlertSettings);
     });
   }
 
@@ -130,22 +107,10 @@ export class PostService {
   deletePost(postId: string) {
     this.afs.doc('posts/' + postId).delete().then(() => {
       this.notificationsService
-        .success('Woohoo!', 'Post successfully deleted!', {
-          timeOut: 3000,
-          showProgressBar: true,
-          pauseOnHover: true,
-          clickToClose: true,
-          preventLastDuplicates: true
-        });
+        .success('Woohoo!', 'Post successfully deleted!', defaultAlertSettings);
     }).catch((error) => {
       this.notificationsService
-        .error('Error upon deleting a post', error.message, {
-          timeOut: 3000,
-          showProgressBar: true,
-          pauseOnHover: true,
-          clickToClose: true,
-          preventLastDuplicates: true
-        });
+        .error('Error upon deleting a post', error.message, defaultAlertSettings);
     });
 }
 

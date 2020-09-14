@@ -6,6 +6,7 @@ import {UserService} from '../../../main/users/services/user.service';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {User} from '../../../main/users/models/user';
 import {NotificationsService} from 'angular2-notifications';
+import {defaultAlertSettings} from '../../../shared/alert.settings';
 
 @Component({
   selector: 'app-edit-user-page',
@@ -43,13 +44,7 @@ export class EditUserPageComponent implements OnInit {
         this.loading = false;
       }).catch((error) => {
       this.notificationsService
-        .error('Error upon getting a user', error.message, {
-          timeOut: 3000,
-          showProgressBar: true,
-          pauseOnHover: true,
-          clickToClose: true,
-          preventLastDuplicates: true
-        });
+        .error('Error upon getting a user', error.message, defaultAlertSettings);
     });
 
   }

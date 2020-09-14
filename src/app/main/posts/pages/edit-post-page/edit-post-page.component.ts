@@ -6,6 +6,7 @@ import {PostService} from '../../services/post.service';
 import {Post} from '../../models/post';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {NotificationsService} from 'angular2-notifications';
+import {defaultAlertSettings} from '../../../../shared/alert.settings';
 
 @Component({
   selector: 'app-edit-post-page',
@@ -38,23 +39,11 @@ export class EditPostPageComponent implements OnInit {
         this.loading = false;
       } else {
         this.notificationsService
-          .error('No such post', '', {
-            timeOut: 3000,
-            showProgressBar: true,
-            pauseOnHover: true,
-            clickToClose: true,
-            preventLastDuplicates: true
-          });
+          .error('No such post', '', defaultAlertSettings);
       }
     }).catch((error) => {
       this.notificationsService
-        .error('Error upon getting a post', '', {
-          timeOut: 3000,
-          showProgressBar: true,
-          pauseOnHover: true,
-          clickToClose: true,
-          preventLastDuplicates: true
-        });
+        .error('Error upon getting a post', '', defaultAlertSettings);
     });
 
   }

@@ -14,6 +14,7 @@ import {Observable} from 'rxjs';
 import {AuthService} from '../auth/services/auth.service';
 import {NotificationsService} from 'angular2-notifications';
 import {UserService} from '../../main/users/services/user.service';
+import {defaultAlertSettings} from '../alert.settings';
 
 @Injectable({
   providedIn: 'root'
@@ -39,13 +40,7 @@ export class AuthGuard implements CanActivate {
 
       if (route.data.role && route.data.role.indexOf(userRole) === -1) {
         this.notificationsService
-          .warn('You don\'t have a permission to access this page!', '', {
-            timeOut: 3000,
-            showProgressBar: true,
-            pauseOnHover: true,
-            clickToClose: true,
-            preventLastDuplicates: true
-          });
+          .warn('You don\'t have a permission to access this page!', '', defaultAlertSettings);
         return false;
       }
 
@@ -55,13 +50,7 @@ export class AuthGuard implements CanActivate {
     // this.router.navigateByUrl('/');
 
     this.notificationsService
-      .warn('This page requires you to be logged in!', '', {
-        timeOut: 3000,
-        showProgressBar: true,
-        pauseOnHover: true,
-        clickToClose: true,
-        preventLastDuplicates: true
-      });
+      .warn('This page requires you to be logged in!', '', defaultAlertSettings);
 
     return false;
   }

@@ -4,6 +4,7 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import {NotificationsService} from 'angular2-notifications';
 import {User} from '../models/user';
 import {Observable} from 'rxjs';
+import {defaultAlertSettings} from '../../../shared/alert.settings';
 
 @Injectable({
   providedIn: 'root'
@@ -27,22 +28,10 @@ export class UserService {
         ...user
       }).then(() => {
       this.notificationsService
-        .success('Woohoo!', 'Successfully created a user!', {
-          timeOut: 3000,
-          showProgressBar: true,
-          pauseOnHover: true,
-          clickToClose: true,
-          preventLastDuplicates: true
-        });
+        .success('Woohoo!', 'Successfully created a user!', defaultAlertSettings);
     }).catch((error) => {
       this.notificationsService
-        .error('Error upon creating a user', error.message, {
-          timeOut: 3000,
-          showProgressBar: true,
-          pauseOnHover: true,
-          clickToClose: true,
-          preventLastDuplicates: true
-        });
+        .error('Error upon creating a user', error.message, defaultAlertSettings);
     });
   }
 
@@ -92,22 +81,10 @@ export class UserService {
   updateUser(id, changes: Partial<User>): void {
     this.afs.doc('users/' + id).update(changes).then(() => {
       this.notificationsService
-        .success('Woohoo!', 'User successfully updated!', {
-          timeOut: 3000,
-          showProgressBar: true,
-          pauseOnHover: true,
-          clickToClose: true,
-          preventLastDuplicates: true
-        });
+        .success('Woohoo!', 'User successfully updated!', defaultAlertSettings);
     }).catch((error) => {
       this.notificationsService
-        .error('Error upon updating a user', error.message, {
-          timeOut: 3000,
-          showProgressBar: true,
-          pauseOnHover: true,
-          clickToClose: true,
-          preventLastDuplicates: true
-        });
+        .error('Error upon updating a user', error.message, defaultAlertSettings);
     });
   }
 
@@ -122,22 +99,10 @@ export class UserService {
   deleteUser(userId: string) {
     this.afs.doc('users/' + userId).delete().then(() => {
       this.notificationsService
-        .success('Woohoo!', 'User successfully deleted!', {
-          timeOut: 3000,
-          showProgressBar: true,
-          pauseOnHover: true,
-          clickToClose: true,
-          preventLastDuplicates: true
-        });
+        .success('Woohoo!', 'User successfully deleted!', defaultAlertSettings);
     }).catch((error) => {
       this.notificationsService
-        .error('Error upon deleting a user', error.message, {
-          timeOut: 3000,
-          showProgressBar: true,
-          pauseOnHover: true,
-          clickToClose: true,
-          preventLastDuplicates: true
-        });
+        .error('Error upon deleting a user', error.message, defaultAlertSettings);
     });
 
   }

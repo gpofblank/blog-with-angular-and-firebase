@@ -7,6 +7,7 @@ import * as firebase from 'firebase';
 import {NotificationsService} from 'angular2-notifications';
 import {BehaviorSubject} from 'rxjs';
 import GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
+import {defaultAlertSettings} from '../../alert.settings';
 
 @Injectable({
   providedIn: 'root'
@@ -85,13 +86,7 @@ export class AuthService {
         // this.SetLoggedUser(result.user);
       }).catch((error) => {
         this.notificationsService
-          .error('Error', error.message, {
-            timeOut: 3000,
-            showProgressBar: true,
-            pauseOnHover: true,
-            clickToClose: true,
-            preventLastDuplicates: true
-          });
+          .error('Error', error.message, defaultAlertSettings);
       });
   }
 
@@ -114,13 +109,7 @@ export class AuthService {
         this.addUser(result.user, displayName, role);
       }).catch((error) => {
         this.notificationsService
-          .error('Error', error.message, {
-            timeOut: 3000,
-            showProgressBar: true,
-            pauseOnHover: true,
-            clickToClose: true,
-            preventLastDuplicates: true
-          });
+          .error('Error', error.message, defaultAlertSettings);
       });
   }
 
@@ -148,22 +137,10 @@ export class AuthService {
     return this.afAuth.sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
         this.notificationsService
-          .success('Password reset email sent, check your inbox.', '', {
-            timeOut: 3000,
-            showProgressBar: true,
-            pauseOnHover: true,
-            clickToClose: true,
-            preventLastDuplicates: true
-          });
+          .success('Password reset email sent, check your inbox.', '', defaultAlertSettings);
       }).catch((error) => {
         this.notificationsService
-          .error('Error', error.message, {
-            timeOut: 3000,
-            showProgressBar: true,
-            pauseOnHover: true,
-            clickToClose: true,
-            preventLastDuplicates: true
-          });
+          .error('Error', error.message, defaultAlertSettings);
       });
   }
 
@@ -194,13 +171,7 @@ export class AuthService {
         // this.SetLoggedUser(result.user);
       }).catch((error) => {
         this.notificationsService
-          .error('Error', error.message, {
-            timeOut: 3000,
-            showProgressBar: true,
-            pauseOnHover: true,
-            clickToClose: true,
-            preventLastDuplicates: true
-          });
+          .error('Error', error.message, defaultAlertSettings);
       });
   }
 
@@ -217,13 +188,7 @@ export class AuthService {
       this.router.navigateByUrl('auth/login');
 
       this.notificationsService
-        .success('Have a good one!', 'Thanks for visiting Blog Guru', {
-          timeOut: 3000,
-          showProgressBar: true,
-          pauseOnHover: true,
-          clickToClose: true,
-          preventLastDuplicates: true
-        });
+        .success('Have a good one!', 'Thanks for visiting Blog Guru', defaultAlertSettings);
 
     });
   }

@@ -6,6 +6,7 @@ import {UserService} from '../../../users/services/user.service';
 import {NotificationsService} from 'angular2-notifications';
 import {User} from '../../../users/models/user';
 import {Subscription} from 'rxjs';
+import {defaultAlertSettings} from '../../../../shared/alert.settings';
 
 @Component({
   selector: 'app-list-posts',
@@ -38,13 +39,7 @@ export class ListPostsPageComponent implements OnInit, OnDestroy {
         this.author = user.displayName;
       }).catch((error) => {
       this.notificationsService
-        .error('Error upon getting a user', error.message, {
-          timeOut: 3000,
-          showProgressBar: true,
-          pauseOnHover: true,
-          clickToClose: true,
-          preventLastDuplicates: true
-        });
+        .error('Error upon getting a user', error.message, defaultAlertSettings);
     });
 
   }
