@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {AuthGuard} from '../guards/auth.guard';
-import {NotAllowedForLoggedUsersGuard} from '../guards/not-allowed-for-logged-users.guard';
+import {AuthGuard} from '../../shared/guards/auth.guard';
+import {NotAllowedForLoggedUsersGuard} from '../../shared/guards/not-allowed-for-logged-users.guard';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', loadChildren: () => import('./pages/login-page/login-page.module').then(m => m.LoginPageModule)},

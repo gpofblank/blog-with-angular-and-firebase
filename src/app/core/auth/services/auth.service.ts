@@ -7,7 +7,7 @@ import * as firebase from 'firebase';
 import {NotificationsService} from 'angular2-notifications';
 import {BehaviorSubject} from 'rxjs';
 import GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
-import {defaultAlertSettings} from '../../alert.settings';
+import {defaultAlertSettings} from '../../../shared/alert.settings';
 
 @Injectable({
   providedIn: 'root'

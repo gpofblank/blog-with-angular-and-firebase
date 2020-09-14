@@ -3,7 +3,7 @@ import {Post} from '../../models/post';
 import {UserService} from '../../../users/services/user.service';
 import {NotificationsService} from 'angular2-notifications';
 import {User} from '../../../users/models/user';
-import {AuthService} from '../../../../shared/auth/services/auth.service';
+import {AuthService} from '../../../../core/auth/services/auth.service';
 import {PostService} from '../../services/post.service';
 import {defaultAlertSettings} from '../../../../shared/alert.settings';
 

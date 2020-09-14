@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VerifyEmailPageComponent } from './verify-email-page.component';
 import {RouterModule, Routes} from '@angular/router';
-import {PageTitleModule} from '../../../components/page-title/page-title.module';
+import {PageTitleModule} from '../../../../shared/components/page-title/page-title.module';
 
 const routes: Routes = [
   {

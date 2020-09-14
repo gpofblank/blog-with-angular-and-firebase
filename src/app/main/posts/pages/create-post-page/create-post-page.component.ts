@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {AuthService} from '../../../../shared/auth/services/auth.service';
+import {AuthService} from '../../../../core/auth/services/auth.service';
 import {PostService} from '../../services/post.service';
 import {AngularFirestore} from '@angular/fire/firestore';
 

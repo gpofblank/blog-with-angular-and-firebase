@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: 'auth',
-    loadChildren: () => import('./shared/auth/auth.module').then(m => m.AuthModule)
+    loadChildren: () => import('./core/auth/auth.module').then(m => m.AuthModule)
   },
   {
     path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),

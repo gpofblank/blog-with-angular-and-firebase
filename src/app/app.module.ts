@@ -7,7 +7,7 @@ import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {NavigationComponent} from './shared/navigation/navigation.component';
-import {AuthService} from './shared/auth/services/auth.service';
+import {AuthService} from './core/auth/services/auth.service';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 

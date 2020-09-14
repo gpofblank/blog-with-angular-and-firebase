@@ -11,7 +11,7 @@ import {
   UrlTree
 } from '@angular/router';
 import {Observable} from 'rxjs';
-import {AuthService} from '../auth/services/auth.service';
+import {AuthService} from '../../core/auth/services/auth.service';
 import {NotificationsService} from 'angular2-notifications';
 import {UserService} from '../../main/users/services/user.service';
 import {defaultAlertSettings} from '../alert.settings';
