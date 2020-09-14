@@ -66,7 +66,8 @@ export class UserService {
    * @return promise
    */
   getAllUsersOnce() {
-    return this.afs.collection('users').ref.get();
+    return this.afs.collection('users', ref => ref
+      .orderBy('createdAt', 'desc')).ref.get();
   }
 
   // Update

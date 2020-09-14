@@ -48,7 +48,9 @@ export class PostService {
    * @return observable
    */
   getPosts(): Observable<any> {
-    return this.afs.collection('posts').snapshotChanges();
+    return this.afs.collection<Post>('posts', ref => ref
+      .orderBy('createdAt', 'desc'))
+      .snapshotChanges();
   }
 
   /**
@@ -61,7 +63,10 @@ export class PostService {
    */
   getPostsForUser(id): Observable<Post[]> {
     // return this.afs.collection('posts').ref.where('createdBy', '==', id).get();
-    return this.afs.collection<Post>('posts', ref => ref.where('createdBy', '==', id)).valueChanges();
+    return this.afs.collection<Post>('posts', ref => ref
+      .where('createdBy', '==', id)
+      .orderBy('createdAt', 'desc'))
+      .valueChanges();
 
   }
 
@@ -112,6 +117,6 @@ export class PostService {
       this.notificationsService
         .error('Error upon deleting a post', error.message, defaultAlertSettings);
     });
-}
+  }
 
 }
