@@ -21,7 +21,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
               private afAuth: AngularFireAuth,
               private afs: AngularFirestore) {
 
-    if (!!this.afAuth.currentUser) {
       this.loggedUserSub = this.authService.loggedUserFromDbUsers$.subscribe((user) => {
         if (user) {
           this.loggedUser = user;
@@ -29,10 +28,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
           this.loggedUser = {} as User;
         }
       });
-    } else {
-      this.loggedUser = {} as User;
-    }
-
 
   }
 
