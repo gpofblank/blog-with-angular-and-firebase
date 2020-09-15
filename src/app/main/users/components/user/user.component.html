@@ -11,15 +11,23 @@
     </div>
   </div>
   <div class="firstinfo d-flex align-items-center justify-content-center pt-2">
-    <button *ngIf="loggedUser.role === 'admin'"
-            class="btn btn-info m-1"
-            (click)="onRemoveUser($event)">
-      Delete {{user.displayName}}
-    </button>
+    <div *ngIf="loggedUser.role === 'admin'">
+      <button
+        class="btn btn-info m-1"
+        (click)="onRemoveUser($event)">
+        Delete {{user.displayName}}
+      </button>
+      <button
+        class="btn btn-info"
+        routerLink="/main/list-posts/{{user.uid}}">
+        Show posts for {{user.displayName}}
+      </button>
+    </div>
     <button
+      *ngIf="loggedUser.role ==='user'"
       class="btn btn-info"
       routerLink="/main/list-posts/{{user.uid}}">
-      Show posts for {{user.displayName}}
+      Show my posts
     </button>
   </div>
 </div>
