@@ -16,7 +16,7 @@ export class PostSlimComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onRemovePost(user) {
-    this.delete.emit(user);
+  onRemovePost(post) {
+    this.delete.emit(post);
   }
 }

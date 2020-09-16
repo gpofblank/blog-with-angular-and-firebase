@@ -8,6 +8,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {UserModule} from '../../../main/users/components/user/user.module';
 import {PostModule} from '../../../main/posts/components/post/post.module';
 import {PostSlimModule} from '../../../main/posts/components/post-slim/post-slim.module';
+import {UserSlimModule} from '../../../main/users/components/user-slim/user-slim.module';
 
 const routes: Routes = [
   {path: '', component: DashboardPageComponent},
@@ -22,7 +23,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     UserModule,
     PostModule,
-    PostSlimModule
+    PostSlimModule,
+    UserSlimModule
   ]
 })
 export class DashboardPageModule { }
