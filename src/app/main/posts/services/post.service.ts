@@ -81,6 +81,20 @@ export class PostService {
     return this.afs.collection('posts').ref.doc(id).get();
   }
 
+  /**
+   * @ngdoc function
+   * @description Gets a specific post (by title) from Firestore.
+   * Error handling to be taken care of in the respective component
+   * @private
+   * @return observable
+   */
+  getPostByDisplayNameValueChanges(title) {
+    return this.afs.collection('posts', ref => ref
+      .where('title', '>=', title)
+      .where('title', '<=', title + '\uf8ff'))
+      .valueChanges();
+  }
+
   // Update
   /**
    * @ngdoc function

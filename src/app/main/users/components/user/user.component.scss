@@ -28,7 +28,9 @@ body {
 }
 
 .card {
-  width: 500px;
+  width: 37vw;
+  max-width: 50vw;
+  min-width: 400px;
   min-height: 100px;
   height: 200px;
   max-height: 200px;

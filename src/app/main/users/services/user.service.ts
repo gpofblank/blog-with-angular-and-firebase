@@ -49,6 +49,17 @@ export class UserService {
 
   /**
    * @ngdoc function
+   * @description Gets all users from Firestore.
+   * Error handling to be taken care of in the respective component
+   * @private
+   * @return observable
+   */
+  getUsersValueChanges(): Observable<any> {
+    return this.afs.collection('users').valueChanges();
+  }
+
+  /**
+   * @ngdoc function
    * @description Gets a specific user (by id) from Firestore.
    * Error handling to be taken care of in the respective component
    * @private
@@ -56,6 +67,20 @@ export class UserService {
    */
   getUserById(id) {
     return this.afs.collection('users').ref.doc(id).get();
+  }
+
+  /**
+   * @ngdoc function
+   * @description Gets a specific user (by displayName) from Firestore.
+   * Error handling to be taken care of in the respective component
+   * @private
+   * @return observable
+   */
+  getUserByDisplayNameValueChanges(userName) {
+    return this.afs.collection('users', ref => ref
+      .where('displayName', '>=', userName)
+      .where('displayName', '<=', userName + '\uf8ff'))
+      .valueChanges();
   }
 
   /**

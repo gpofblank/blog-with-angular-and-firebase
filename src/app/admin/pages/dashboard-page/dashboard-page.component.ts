@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {animate, group, state, style, transition, trigger} from '@angular/animations';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AngularFirestore} from '@angular/fire/firestore';
@@ -7,6 +7,11 @@ import {Router} from '@angular/router';
 import {NotificationsService} from 'angular2-notifications';
 import {User} from '../../../main/users/models/user';
 import {defaultAlertSettings} from '../../../shared/alert.settings';
+import {Post} from '../../../main/posts/models/post';
+import {BehaviorSubject, Subject, Subscription} from 'rxjs';
+import {PostService} from '../../../main/posts/services/post.service';
+import {debounceTime, distinctUntilChanged, switchMap, tap} from 'rxjs/operators';
+import {liveSearch} from '../../../shared/live-search.operator';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -36,64 +41,48 @@ import {defaultAlertSettings} from '../../../shared/alert.settings';
     ])
   ]
 })
-export class DashboardPageComponent implements OnInit {
-  showLAUBody: boolean;
-  showCUBody: boolean;
-  showUUBody: boolean;
-  showSAPBody: boolean;
-  selectUserForm: FormGroup;
+export class DashboardPageComponent implements OnInit, OnDestroy {
 
-  // users = [
-  //   {uid: 'asdad', displayName: 'asdad12213123'}
-  // ];
+  private userNameSubject = new BehaviorSubject<string>('');
+  readonly users$ = this.userNameSubject.pipe(
+    // tap(userId => console.log('About to make an API call', userId)),
+    liveSearch(userName => this.userService.getUserByDisplayNameValueChanges(userName))
+  );
 
-  users: User[];
-  submitted = false;
+  private postNameSubject = new BehaviorSubject<string>('');
+  readonly posts$ = this.postNameSubject.pipe(
+    // tap(postId => console.log('About to make an API call', postId)),
+    liveSearch(postName => this.postService.getPostByDisplayNameValueChanges(postName))
+  );
+
 
   constructor(private fb: FormBuilder,
               private afs: AngularFirestore,
               private userService: UserService,
               private router: Router,
-              private notificationsService: NotificationsService) {
-    this.showLAUBody = false;
-    this.showCUBody = false;
-    this.showUUBody = false;
-    this.showSAPBody = false;
-
-    this.selectUserForm = this.fb.group({
-      user: [null, [Validators.required]]
-    });
-
-    this.userService.getAllUsersOnce().then((data) => {
-      this.users = data.docs.map(user => user.data() as User);
-    }).catch((error) => {
-      this.notificationsService
-        .error('Error upon getting users', error.message, defaultAlertSettings);
-    });
-  }
-
-  get user() {
-    return this.selectUserForm.get('user');
+              private notificationsService: NotificationsService,
+              private postService: PostService) {
   }
 
   ngOnInit(): void {
   }
 
-  submitForm() {
-    this.submitted = true;
+  searchUsers(userName: string) {
+    this.userNameSubject.next(userName);
+  }
 
-    if (this.selectUserForm.valid) {
-      const id = this.user.value;
-      document.getElementById('closeSelectUserModal').click();
+  searchPosts(postName: string) {
+    this.postNameSubject.next(postName);
+  }
 
-      this.userService.getUserById(id)
-        .then((u) => {
-          const user = u.data() as User;
-          this.router.navigateByUrl('/admin/edit-user/' + user.uid);
-        }).catch((error) => {
-        this.notificationsService
-          .error('Error upon getting a user', error.message, defaultAlertSettings);
-      });
-    }
+  ngOnDestroy() {
+  }
+
+  deletePost(post: Post) {
+    this.postService.deletePost(post.id);
+  }
+
+  deleteUser(user: User) {
+    this.userService.deleteUser(user.uid);
   }
 }

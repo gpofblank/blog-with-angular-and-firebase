@@ -13,3 +13,16 @@
 .card {
   max-height: 150px!important;
 }
+
+.rounded-input {
+  border-radius: 20px;
+  width: 80%;
+  padding-left: 12px;
+}
+
+.rounded-input:focus {
+  outline: none;
+  border: 2px solid #b70909;
+}
+
+

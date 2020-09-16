@@ -1,101 +1,142 @@
 <app-page-title [title]="'Dashboard'"></app-page-title>
+<!--<div class="container">-->
+<!--  <div class="row d-flex justify-content-center align-items-start align-content-center h-100-wo-nav text-center">-->
+
+<!--    <div class="col-sm-6 col-lg-6 mb-1 d-flex justify-content-center justify-content-sm-end mh-200px">-->
+<!--      <div routerLink="/admin/create-user"-->
+<!--           (mouseenter)="showCUBody=true"-->
+<!--           (mouseleave)="showCUBody=false"-->
+<!--           class="card text-white bg-success mb-1 w-100 h-100 pointer" style="max-width: 22rem;">-->
+<!--        <div class="card-header text-white">Create User</div>-->
+<!--        <div *ngIf="showCUBody" class="card-body" [@DivInOut]>-->
+<!--          <h5 class="card-title">Creates a user</h5>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    <div class="col-sm-6 col-lg-6 mb-1 d-flex justify-content-center justify-content-sm-start mh-200px">-->
+<!--      <div data-toggle="modal" data-target="#selectUserModal" class="card text-dark bg-white mb-1 w-100 h-100 pointer"-->
+<!--           style="max-width: 22rem;">-->
+<!--        <div (mouseenter)="showUUBody=true"-->
+<!--             (mouseleave)="showUUBody=false"-->
+<!--             class="card-header text-dark">Update user-->
+<!--        </div>-->
+<!--        <div *ngIf="showUUBody" class="card-body" [@DivInOut]>-->
+<!--          <h5 class="card-title text-dark">Updates a user</h5>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    <div class="col-sm-6 col-lg-6 mb-1 d-flex justify-content-center justify-content-sm-end mh-200px">-->
+<!--      <div class="card text-white bg-warning mb-1 w-100 h-100 pointer" style="max-width: 22rem;">-->
+<!--        <div (mouseenter)="showLAUBody=true"-->
+<!--             (mouseleave)="showLAUBody=false"-->
+<!--             class="card-header text-white" routerLink="/admin/list-users">List all users-->
+<!--        </div>-->
+<!--        <div *ngIf="showLAUBody" class="card-body" [@DivInOut]>-->
+<!--          <h5 class="card-title">Lists all users</h5>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    <div class="col-sm-6 col-lg-6 mb-1 d-flex justify-content-center justify-content-sm-start mh-200px">-->
+<!--      <div routerLink="/main" class="card text-white bg-info mb-1 w-100 h-100 pointer" style="max-width: 22rem;">-->
+<!--        <div (mouseenter)="showSAPBody=true"-->
+<!--             (mouseleave)="showSAPBody=false"-->
+<!--             class="card-header text-white">List all posts-->
+<!--        </div>-->
+<!--        <div *ngIf="showSAPBody" class="card-body" [@DivInOut]>-->
+<!--          <h5 class="card-title">Lists all posts</h5>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--  </div>-->
+<!--</div>-->
+
+<!--<div>-->
+<!--  <div id="modal" class="modal fade" id="selectUserModal" aria-hidden="true" tabindex="-1" role="dialog">-->
+<!--    <div class="modal-dialog" role="document">-->
+<!--      <div class="modal-content">-->
+<!--        <div class="modal-header">-->
+<!--          <h5 class="modal-title text-dark" id="selectUserModalLabel">Select user to update</h5>-->
+<!--          <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--            <span aria-hidden="true">&times;</span>-->
+<!--          </button>-->
+<!--        </div>-->
+<!--        <div class="modal-body">-->
+<!--          <p class="text-dark">Select a user from the list below</p>-->
+<!--        </div>-->
+
+<!--        <form class="mx-4" [formGroup]="selectUserForm" (ngSubmit)="submitForm()">-->
+<!--          <select class="custom-select form-control mb-2"-->
+<!--                  formControlName="user"-->
+<!--          >-->
+<!--            <option [ngValue]="null" disabled>Select a user</option>-->
+<!--            <option *ngFor="let user of users" [ngValue]="user.uid">-->
+<!--              {{ user.displayName }}-->
+<!--            </option>-->
+<!--          </select>-->
+<!--          <div class="alert-danger p-1 mb-2" *ngIf="submitted && user.errors?.required">-->
+<!--            User is required-->
+<!--          </div>-->
+<!--          <div class="modal-footer">-->
+<!--            <button id="closeSelectUserModal" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>-->
+<!--            <button type="submit" class="btn btn-primary">Update User</button>-->
+<!--          </div>-->
+<!--        </form>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+
 <div class="container">
-  <div class="row d-flex justify-content-center align-items-start align-content-center h-100-wo-nav text-center">
+  <div class="row text-center">
 
-    <div class="col-sm-6 col-lg-6 mb-1 d-flex justify-content-center justify-content-sm-end mh-200px">
-      <div routerLink="/admin/create-user"
-           (mouseenter)="showCUBody=true"
-           (mouseleave)="showCUBody=false"
-           class="card text-white bg-success mb-1 w-100 h-100 pointer" style="max-width: 22rem;">
-        <div class="card-header text-white">Create User</div>
-        <div *ngIf="showCUBody" class="card-body" [@DivInOut]>
-          <h5 class="card-title">Creates a user</h5>
-        </div>
+    <div class="col-6">
+      <h2>Users</h2>
+      <div class="p-2">
+        <input #displayNameSearch
+               class="rounded-input"
+               type="text"
+               placeholder="Search by username"
+               (keyup)="searchUsers(displayNameSearch.value)"
+        >
+      </div>
+      <div *ngIf="(users$ | async) as users; else loading">
+        <p>Usernames:</p>
+        <app-user *ngFor="let user of users.slice(0, 5);" [user]="user"
+                  (delete)="deleteUser(user)"
+        ></app-user>
       </div>
     </div>
 
-    <div class="col-sm-6 col-lg-6 mb-1 d-flex justify-content-center justify-content-sm-start mh-200px">
-      <div data-toggle="modal" data-target="#selectUserModal" class="card text-dark bg-white mb-1 w-100 h-100 pointer"
-           style="max-width: 22rem;">
-        <div (mouseenter)="showUUBody=true"
-             (mouseleave)="showUUBody=false"
-             class="card-header text-dark">Update user
-        </div>
-        <div *ngIf="showUUBody" class="card-body" [@DivInOut]>
-          <h5 class="card-title text-dark">Updates a user</h5>
-        </div>
+    <div class="col-6">
+      <h2>Posts</h2>
+      <div class="p-2">
+        <input #titleSearch
+               class="rounded-input"
+               type="text"
+               placeholder="Search by title"
+               (keyup)="searchPosts(titleSearch.value)"
+        >
       </div>
-    </div>
-
-    <div class="col-sm-6 col-lg-6 mb-1 d-flex justify-content-center justify-content-sm-end mh-200px">
-      <div class="card text-white bg-warning mb-1 w-100 h-100 pointer" style="max-width: 22rem;">
-        <div (mouseenter)="showLAUBody=true"
-             (mouseleave)="showLAUBody=false"
-             class="card-header text-white" routerLink="/admin/list-users">List all users
+      <div *ngIf="(posts$ | async) as posts; else loading">
+        <p>Post names:</p>
+        <div *ngFor="let post of posts.slice(0, 3);">
+          <app-post-slim [post]="post"
+                         (delete)="deletePost(post)"
+          ></app-post-slim>
+          <hr class="bg-info mx-5">
         </div>
-        <div *ngIf="showLAUBody" class="card-body" [@DivInOut]>
-          <h5 class="card-title">Lists all users</h5>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-sm-6 col-lg-6 mb-1 d-flex justify-content-center justify-content-sm-start mh-200px">
-      <div routerLink="/main" class="card text-white bg-info mb-1 w-100 h-100 pointer" style="max-width: 22rem;">
-        <div (mouseenter)="showSAPBody=true"
-             (mouseleave)="showSAPBody=false"
-             class="card-header text-white">List all posts
-        </div>
-        <div *ngIf="showSAPBody" class="card-body" [@DivInOut]>
-          <h5 class="card-title">Lists all posts</h5>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<div>
-  <div id="modal" class="modal fade" id="selectUserModal" aria-hidden="true" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title text-dark" id="selectUserModalLabel">Select user to update</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p class="text-dark">Select a user from the list below</p>
-        </div>
-
-        <form class="mx-4" [formGroup]="selectUserForm" (ngSubmit)="submitForm()">
-          <select class="custom-select form-control mb-2"
-                  formControlName="user"
-          >
-            <option [ngValue]="null" disabled>Select a user</option>
-            <option *ngFor="let user of users" [ngValue]="user.uid">
-              {{ user.displayName }}
-            </option>
-          </select>
-          <div class="alert-danger p-1 mb-2" *ngIf="submitted && user.errors?.required">
-            User is required
-          </div>
-          <div class="modal-footer">
-            <button id="closeSelectUserModal" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-primary">Update User</button>
-          </div>
-        </form>
       </div>
     </div>
   </div>
 </div>
 
-
-<!--<app-modal *ngIf="showModal"-->
-<!--  [title]="'Select User'"-->
-<!--  [content]="''"-->
-<!--  [form]="true"-->
-<!--  [dropdownUsers]="true"-->
-<!--  [confirmBtnTxt]="'Update'"-->
-<!--&gt;</app-modal>-->
-
+<ng-template #loading>
+  <div class="d-flex align-items-center h-100-wo-nav">
+    <div class="loader">Loading...</div>
+  </div>
+</ng-template>
