@@ -10,7 +10,7 @@ import {defaultAlertSettings} from '../../../shared/alert.settings';
 import {Post} from '../../../main/posts/models/post';
 import {BehaviorSubject, Subject, Subscription} from 'rxjs';
 import {PostService} from '../../../main/posts/services/post.service';
-import {debounceTime, distinctUntilChanged, switchMap, tap} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, map, switchMap, tap} from 'rxjs/operators';
 import {liveSearch} from '../../../shared/live-search.operator';
 
 @Component({
@@ -46,7 +46,8 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   private userNameSubject = new BehaviorSubject<string>('');
   readonly users$ = this.userNameSubject.pipe(
     // tap(userId => console.log('About to make an API call', userId)),
-    liveSearch(userName => this.userService.getUserByDisplayNameValueChanges(userName))
+    liveSearch(userName => this.userService.getUserByDisplayNameValueChanges(userName)
+    )
   );
 
   private postNameSubject = new BehaviorSubject<string>('');
@@ -54,7 +55,6 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
     // tap(postId => console.log('About to make an API call', postId)),
     liveSearch(postName => this.postService.getPostByDisplayNameValueChanges(postName))
   );
-
 
   constructor(private fb: FormBuilder,
               private afs: AngularFirestore,

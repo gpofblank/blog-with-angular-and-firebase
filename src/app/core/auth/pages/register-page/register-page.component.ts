@@ -48,7 +48,7 @@ export class RegisterPageComponent implements OnInit {
 
     this.submitted = true;
 
-    const role = 'admin';
+    const role = 'user';
 
     if (this.registerForm.valid) {
       this.authService.SignUp(this.email.value, this.password.value, this.displayName.value, role);

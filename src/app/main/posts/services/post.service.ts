@@ -62,11 +62,25 @@ export class PostService {
    * @return Observable<Post[]>
    */
   getPostsForUser(id): Observable<Post[]> {
-    // return this.afs.collection('posts').ref.where('createdBy', '==', id).get();
     return this.afs.collection<Post>('posts', ref => ref
       .where('createdBy', '==', id)
       .orderBy('createdAt', 'desc'))
       .valueChanges();
+
+  }
+
+  /**
+   * @ngdoc function
+   * @description Gets all posts for a specific user from Firestore once.
+   * Error handling to be taken care of in the respective component
+   * @private
+   * @param id
+   * @return Promise<Post[]>
+   */
+  getPostsForUserOnce(id) {
+    return this.afs.collection<Post>('posts', ref => ref
+      .where('createdBy', '==', id)
+      .orderBy('createdAt', 'desc')).ref.get();
 
   }
 
