@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {User} from '../../models/user';
 import {PostService} from '../../../posts/services/post.service';
-import {map} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
+import {FollowService} from '../../services/follow.service';
 
 @Component({
   selector: 'app-user-slim',
@@ -17,8 +17,8 @@ export class UserSlimComponent implements OnInit, OnDestroy {
   usersPostsCountSub: Subscription;
   usersPostsCount = 0;
 
-  constructor(private postService: PostService) {
-
+  constructor(private postService: PostService,
+              private followService: FollowService) {
   }
 
   ngOnInit(): void {

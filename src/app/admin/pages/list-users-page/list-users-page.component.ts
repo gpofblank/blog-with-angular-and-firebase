@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {User} from '../../../main/users/models/user';
 import {UserService} from '../../../main/users/services/user.service';
 import {Subscription} from 'rxjs';
+import {AuthService} from '../../../core/auth/services/auth.service';
 
 @Component({
   selector: 'app-list-users-page',
@@ -12,14 +13,18 @@ export class ListUsersPageComponent implements OnInit, OnDestroy {
   allUsers: User[];
   loading = true;
   getUsersSub: Subscription;
+  currentUser: any;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService,
+              private authService: AuthService) {
     this.getUsersSub = this.userService.getUsers().subscribe((data) => {
       this.allUsers = data.map(p => {
         this.loading = false;
         return {...p.payload.doc.data()} as User;
       });
     });
+
+    this.currentUser = this.authService.loggedUser;
   }
 
   ngOnInit(): void {

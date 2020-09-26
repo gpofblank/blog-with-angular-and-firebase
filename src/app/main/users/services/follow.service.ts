@@ -3,11 +3,16 @@ import {Observable} from 'rxjs';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {defaultAlertSettings} from '../../../shared/alert.settings';
 import {NotificationsService} from 'angular2-notifications';
+import {map} from 'rxjs/operators';
+import * as firebase from 'firebase';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FollowService {
+
+  userToFollow;
+  userToUnfollow;
 
   constructor(private afs: AngularFirestore,
               private notificationsService: NotificationsService) {
@@ -22,10 +27,16 @@ export class FollowService {
    * @return void
    */
   follow(followerId: string, followedId: string): void {
-    this.afs.doc('followers/' + followedId).update({[followerId]: true}).then(() => {
-      this.afs.doc('followers/' + followedId).update({[followerId]: true}).then(() => {
+
+    this.afs.collection('users').ref.doc(followedId).get()
+      .then((user) => {
+        this.userToFollow = user.data().displayName;
+      });
+
+    this.afs.doc(`followers/${followedId}`).set({[followerId]: true}, {merge: true}).then(() => {
+      this.afs.doc(`following/${followerId}`).set({[followedId]: true}, {merge: true}).then(() => {
         this.notificationsService
-          .success('Success!', '', defaultAlertSettings);
+          .success(`Successfully followed ${this.userToUnfollow}!`, '', defaultAlertSettings);
       }).catch((error) => {
         this.notificationsService
           .error('Error upon following the specified user', error.message, defaultAlertSettings);
@@ -55,8 +66,12 @@ export class FollowService {
    * @private
    * @return observable
    */
-  getFollowing(followerId: string, followedId: string): Observable<any> {
-    return this.afs.collection('following', ref => ref.where(followerId, '==', followedId)).snapshotChanges();
+  getFollowing(followerId: string, followedId: string) {
+    return this.afs.doc(`following/${followerId}`).valueChanges().pipe(
+      map(data => {
+        return data[followedId];
+      })
+    );
   }
 
   // Delete
@@ -68,20 +83,52 @@ export class FollowService {
    * @return void
    */
   unfollow(followerId: string, followedId: string): void {
-    this.afs.doc(`followers/${followedId}/${followerId}`).delete().then(() => {
-      this.afs.doc(`following/${followerId}/${followedId}`).delete().then(() => {
-        this.notificationsService
-          .success('Success!', '', defaultAlertSettings);
-      }).catch((error) => {
-        this.notificationsService
-          .error('Error upon unfollowing a user', error.message, defaultAlertSettings);
+
+    this.afs.collection('users').ref.doc(followedId).get()
+      .then((user) => {
+        this.userToUnfollow = user.data().displayName;
       });
-      this.notificationsService
-        .success('Success!', '', defaultAlertSettings);
-    }).catch((error) => {
+
+    const followersRef = this.afs.doc(`followers/${followedId}`);
+    const followingRef = this.afs.doc(`following/${followerId}`);
+
+    // delete from followers
+    followersRef.update({
+      [followerId]: firebase.firestore.FieldValue.delete()
+    })
+      .then(() => {
+        // delete from following
+        followingRef.update({
+          [followedId]: firebase.firestore.FieldValue.delete()
+        })
+          .then(() => {
+            this.notificationsService
+              .success(`Successfully unfollowed ${this.userToUnfollow}!`, '', defaultAlertSettings);
+          }).catch((error) => {
+          this.notificationsService
+            .error('Error upon unfollowing a user', error.message, defaultAlertSettings);
+        });
+      }).catch((error) => {
       this.notificationsService
         .error('Error upon unfollowing a user', error.message, defaultAlertSettings);
     });
   }
+
+  // This is how it works in the RealTime Database world... (just for future ref)
+  //   this.afs.doc(`followers/${followedId}/${followerId}`).delete().then(() => {
+  //     this.afs.doc(`following/${followerId}/${followedId}`).delete().then(() => {
+  //       this.notificationsService
+  //         .success('Success!', '', defaultAlertSettings);
+  //     }).catch((error) => {
+  //       this.notificationsService
+  //         .error('Error upon unfollowing a user', error.message, defaultAlertSettings);
+  //     });
+  //     this.notificationsService
+  //       .success('Success!', '', defaultAlertSettings);
+  //   }).catch((error) => {
+  //     this.notificationsService
+  //       .error('Error upon unfollowing a user', error.message, defaultAlertSettings);
+  //   });
+  // }
 
 }

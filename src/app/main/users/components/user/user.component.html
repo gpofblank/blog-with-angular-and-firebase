@@ -1,4 +1,7 @@
 <div class="content m-3">
+  <div *ngIf="isFollowing; then unfollowButton else followButton">
+    button renders here
+  </div>
   <div class="card">
     <div class="firstinfo">
       <img
@@ -17,12 +20,14 @@
         (click)="onRemoveUser($event)">
         Delete {{user.displayName}}
       </button>
+
       <button
         class="btn btn-info"
         routerLink="/main/list-posts/{{user.uid}}">
         {{user.displayName}}'s posts
       </button>
     </div>
+
     <button
       *ngIf="loggedUser.role ==='user'"
       class="btn btn-info"
@@ -32,3 +37,13 @@
   </div>
 </div>
 
+<ng-template #followButton>
+  <div class="row">
+    <button class="btn btn-info ml-auto follow-unfollow-btn" (click)="toggleFollow()">Follow</button>
+  </div>
+</ng-template>
+
+<ng-template #unfollowButton>
+  <div class="row">
+    <button class="btn btn-warning ml-auto follow-unfollow-btn" (click)="toggleFollow()">Unfollow</button>
+  </div></ng-template>

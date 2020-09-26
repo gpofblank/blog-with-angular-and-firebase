@@ -12,6 +12,8 @@ import {BehaviorSubject, Subject, Subscription} from 'rxjs';
 import {PostService} from '../../../main/posts/services/post.service';
 import {debounceTime, distinctUntilChanged, map, switchMap, tap} from 'rxjs/operators';
 import {liveSearch} from '../../../shared/live-search.operator';
+import {AngularFireAuth} from '@angular/fire/auth';
+import {AuthService} from '../../../core/auth/services/auth.service';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -56,12 +58,16 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
     liveSearch(postName => this.postService.getPostByDisplayNameValueChanges(postName))
   );
 
+  currentUser: User;
+
   constructor(private fb: FormBuilder,
               private afs: AngularFirestore,
+              private authService: AuthService,
               private userService: UserService,
               private router: Router,
               private notificationsService: NotificationsService,
               private postService: PostService) {
+    this.currentUser = this.authService.loggedUser;
   }
 
   ngOnInit(): void {
