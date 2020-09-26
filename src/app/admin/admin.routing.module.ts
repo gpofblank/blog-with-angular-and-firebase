@@ -15,10 +15,6 @@ const routes: Routes = [
     path: 'edit-user/:id',
     loadChildren: () => import('./pages/edit-user-page/edit-user-page.module').then(m => m.EditUserPageModule)
   },
-  {
-    path: 'list-users',
-    loadChildren: () => import('./pages/list-users-page/list-users-page.module').then(m => m.ListUsersPageModule)
-  },
 ];
 
 @NgModule({

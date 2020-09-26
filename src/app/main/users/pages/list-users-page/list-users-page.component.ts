@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {User} from '../../../main/users/models/user';
-import {UserService} from '../../../main/users/services/user.service';
+import {User} from '../../models/user';
+import {UserService} from '../../services/user.service';
 import {Subscription} from 'rxjs';
-import {AuthService} from '../../../core/auth/services/auth.service';
+import {AuthService} from '../../../../core/auth/services/auth.service';
 
 @Component({
   selector: 'app-list-users-page',
