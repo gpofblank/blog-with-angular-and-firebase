@@ -26,7 +26,7 @@ export class FollowService {
    * @private
    * @return void
    */
-  follow(followerId: string, followedId: string): void {
+  follow(followerId: string, followedId: string, followedUserName: string): void {
 
     // // get username
     // this.afs.collection('users').ref.doc(followedId).get()
@@ -40,7 +40,7 @@ export class FollowService {
       this.afs.doc(`following/${followerId}`).set({[followedId]: true}, {merge: true}).then(() => {
         this.notificationsService
           // .success(`Successfully followed ${this.userToUnfollow}!`, '', defaultAlertSettings);
-          .success(`Success`, '', defaultAlertSettings);
+          .success(`Successfully followed ${followedUserName}!`, '', defaultAlertSettings);
       }).catch((error) => {
         this.notificationsService
           .error('Error upon following the specified user', error.message, defaultAlertSettings);
@@ -87,7 +87,7 @@ export class FollowService {
    * @private
    * @return void
    */
-  unfollow(followerId: string, followedId: string): void {
+  unfollow(followerId: string, followedId: string, followedUserName: string): void {
 
     // // get username
     // this.afs.collection('users').ref.doc(followedId).get()
@@ -110,7 +110,7 @@ export class FollowService {
           .then(() => {
             this.notificationsService
               // .success(`Successfully unfollowed ${this.userToUnfollow}!`, '', defaultAlertSettings);
-              .success(`Success!`, '', defaultAlertSettings);
+              .success(`Successfully unfollowed ${followedUserName}`, '', defaultAlertSettings);
           }).catch((error) => {
           this.notificationsService
             .error('Error upon unfollowing a user', error.message, defaultAlertSettings);

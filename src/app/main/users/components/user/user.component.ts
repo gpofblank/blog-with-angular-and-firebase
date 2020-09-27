@@ -70,12 +70,13 @@ export class UserComponent implements OnInit, OnDestroy {
 
   toggleFollow() {
     const userId = this.user.uid;
+    const userName = this.user.displayName;
     const currentUserId = this.currentUser.uid;
 
     if (this.isFollowing) {
-      this.followService.unfollow(currentUserId, userId);
+      this.followService.unfollow(currentUserId, userId, userName);
     } else {
-      this.followService.follow(currentUserId, userId);
+      this.followService.follow(currentUserId, userId, userName);
     }
   }
 }
