@@ -1,6 +1,8 @@
 <div class="content m-3">
-  <div *ngIf="isFollowing; then unfollowButton else followButton">
-    button renders here
+  <div *ngIf="withFollowBadge">
+    <div *ngIf="isFollowing; then unfollowButton else followButton">
+      button renders here
+    </div>
   </div>
   <div class="card">
     <div class="firstinfo">
@@ -11,6 +13,29 @@
         <h3>Role: {{user.role}}</h3>
         <p class="bio">The UID of {{user.displayName}} is {{user.uid}}</p>
       </div>
+    </div>
+    <!-- following and followers section -->
+    <div class="z-index-100 d-flex ml-n4">
+      <button class="btn text-white align-items-center justify-content-center d-flex"
+              data-toggle="tooltip"
+              data-placement="bottom"
+              title="Followers">
+        {{followerCount}}
+        <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-box-arrow-in-right" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"/>
+          <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+        </svg>
+      </button>
+      <button class="btn text-white align-items-center justify-content-center d-flex"
+              data-toggle="tooltip"
+              data-placement="bottom"
+              title="Following">
+        <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-box-arrow-right mr-1" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+          <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+        </svg>
+        {{followingCount}}
+      </button>
     </div>
   </div>
   <div class="firstinfo d-flex align-items-center justify-content-center pt-2">
@@ -38,7 +63,7 @@
 </div>
 
 <ng-template #followButton>
-  <div class="row">
+  <div class="row follow-unfollow-btn-holder">
     <button class="btn btn-info ml-auto follow-unfollow-btn" (click)="toggleFollow()">Follow</button>
   </div>
 </ng-template>

@@ -1,7 +1,6 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from '../../models/user';
 import {AuthService} from '../../../../core/auth/services/auth.service';
-import {Subscription} from 'rxjs';
 import {UserService} from '../../services/user.service';
 
 @Component({
@@ -10,11 +9,11 @@ import {UserService} from '../../services/user.service';
   styleUrls: ['./user-profile-page.component.scss']
 })
 export class UserProfilePageComponent implements OnInit {
-  user: User;
+  currentUser: User;
 
   constructor(private authService: AuthService,
               private userService: UserService) {
-    this.user = JSON.parse(localStorage.getItem('user'));
+    this.currentUser = JSON.parse(localStorage.getItem('user'));
   }
 
   ngOnInit(): void {

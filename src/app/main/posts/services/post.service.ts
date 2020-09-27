@@ -104,8 +104,9 @@ export class PostService {
    */
   getPostByDisplayNameValueChanges(title) {
     return this.afs.collection('posts', ref => ref
-      .where('title', '>=', title)
-      .where('title', '<=', title + '\uf8ff'))
+      .orderBy('title')
+      .startAt(`%${title}%`)
+      .endAt(title + '\uf8ff'))
       .valueChanges();
   }
 

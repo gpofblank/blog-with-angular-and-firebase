@@ -78,8 +78,9 @@ export class UserService {
    */
   getUserByDisplayNameValueChanges(userName) {
     return this.afs.collection('users', ref => ref
-      .where('displayName', '>=', userName)
-      .where('displayName', '<=', userName + '\uf8ff'))
+      .orderBy('displayName')
+      .startAt(`%${userName}%`)
+      .endAt(userName + '\uf8ff'))
       .valueChanges();
   }
 

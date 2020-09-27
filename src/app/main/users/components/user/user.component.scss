@@ -83,7 +83,7 @@ body {
   padding: 0px 20px;
 }
 .firstinfo .profileinfo h1 {
-  font-size: 1.8em;
+  font-size: 20px;
 }
 .firstinfo .profileinfo h3 {
   font-size: 1.2em;
@@ -135,4 +135,8 @@ body {
   margin-right: 15px;
   z-index: 10;
   line-height: 10px;
+}
+
+.z-index-100 {
+  z-index: 100;
 }

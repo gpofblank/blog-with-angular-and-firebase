@@ -61,7 +61,18 @@ export class FollowService {
    * @return observable
    */
   getFollowers(userId: string): Observable<any> {
-    return this.afs.collection('followers').doc(userId).snapshotChanges();
+    return this.afs.collection('followers').doc(userId).valueChanges();
+  }
+
+  /**
+   * @ngdoc function
+   * @description Get all following from Firestore.
+   * Error handling to be taken care of in the respective component
+   * @private
+   * @return observable
+   */
+  getFollowing(followerId: string) {
+    return this.afs.doc(`following/${followerId}`).valueChanges();
   }
 
   /**
@@ -71,7 +82,7 @@ export class FollowService {
    * @private
    * @return observable
    */
-  getFollowing(followerId: string, followedId: string) {
+  getFollowingForSpecificUser(followerId: string, followedId: string) {
     return this.afs.doc(`following/${followerId}`).valueChanges().pipe(
       map(data => {
         return data[followedId];

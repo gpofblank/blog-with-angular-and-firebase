@@ -3,6 +3,7 @@ import {User} from '../../models/user';
 import {UserService} from '../../services/user.service';
 import {FollowService} from '../../services/follow.service';
 import {AuthService} from '../../../../core/auth/services/auth.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-user',
@@ -13,25 +14,21 @@ export class UserComponent implements OnInit, OnDestroy {
 
   @Input() user: User;
   @Input() currentUser: User;
+  @Input() withFollowBadge: boolean;
   @Output() delete: EventEmitter<any> = new EventEmitter<any>();
   loggedUser = {} as User;
 
-  followerCount: number;
+  followerCount = 0;
+  followingCount = 0;
   isFollowing: boolean;
-  followers;
-  following;
+
+  followersSub: Subscription;
+  followingSub: Subscription;
+  usersThatThisUserFollowsSub: Subscription;
 
   constructor(private userService: UserService,
               private followService: FollowService) {
     this.loggedUser = JSON.parse(localStorage.getItem('user'));
-  }
-
-  private static countFollowers(followers) {
-    if (followers.$value === null) {
-      return 0;
-    } else {
-      return followers.length;
-    }
   }
 
   ngOnInit(): void {
@@ -39,19 +36,25 @@ export class UserComponent implements OnInit, OnDestroy {
     const currentUserId = this.currentUser.uid;
 
     // checks if the currently logged in user is following this.user
-    this.following = this.followService.getFollowing(currentUserId, userId)
+    this.followingSub = this.followService.getFollowingForSpecificUser(currentUserId, userId)
       .subscribe(following => {
-
         this.isFollowing = !!following;
-
       });
 
     // retrieves the follower count for a user's profile
-    this.followers = this.followService.getFollowers(userId)
+    this.followersSub = this.followService.getFollowers(userId)
       .subscribe(followers => {
+        if (followers) {
+          this.followerCount = Object.keys(followers).length;
+        }
+      });
 
-        this.followerCount = UserComponent.countFollowers(followers);
-
+    // retrieves the following count for a user's profile
+    this.usersThatThisUserFollowsSub = this.followService.getFollowing(userId)
+      .subscribe(usersThatThisUserFollows => {
+        if (usersThatThisUserFollows) {
+          this.followingCount = Object.keys(usersThatThisUserFollows).length;
+        }
       });
   }
 
@@ -60,11 +63,14 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.followers) {
-      this.followers.unsubscribe();
+    if (this.followersSub) {
+      this.followersSub.unsubscribe();
     }
-    if (this.following) {
-      this.following.unsubscribe();
+    if (this.followingSub) {
+      this.followingSub.unsubscribe();
+    }
+    if (this.usersThatThisUserFollowsSub) {
+      this.usersThatThisUserFollowsSub.unsubscribe();
     }
   }
 
@@ -79,5 +85,13 @@ export class UserComponent implements OnInit, OnDestroy {
       this.followService.follow(currentUserId, userId, userName);
     }
   }
+
+  // countFollowers(followers) {
+  //   if (!followers.payload.data.length) {
+  //     return 0;
+  //   } else {
+  //     return followers.payload.data.length;
+  //   }
+  // }
 }
 
