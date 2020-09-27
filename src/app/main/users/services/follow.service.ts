@@ -28,15 +28,19 @@ export class FollowService {
    */
   follow(followerId: string, followedId: string): void {
 
-    this.afs.collection('users').ref.doc(followedId).get()
-      .then((user) => {
-        this.userToFollow = user.data().displayName;
-      });
+    // // get username
+    // this.afs.collection('users').ref.doc(followedId).get()
+    //   .then((user) => {
+    //     this.userToFollow = user.data().displayName;
+    //   });
 
+    // update followers
     this.afs.doc(`followers/${followedId}`).set({[followerId]: true}, {merge: true}).then(() => {
+      // update following
       this.afs.doc(`following/${followerId}`).set({[followedId]: true}, {merge: true}).then(() => {
         this.notificationsService
-          .success(`Successfully followed ${this.userToUnfollow}!`, '', defaultAlertSettings);
+          // .success(`Successfully followed ${this.userToUnfollow}!`, '', defaultAlertSettings);
+          .success(`Success`, '', defaultAlertSettings);
       }).catch((error) => {
         this.notificationsService
           .error('Error upon following the specified user', error.message, defaultAlertSettings);
@@ -45,6 +49,7 @@ export class FollowService {
       this.notificationsService
         .error('Error upon following the specified user', error.message, defaultAlertSettings);
     });
+
   }
 
   // Read
@@ -84,10 +89,11 @@ export class FollowService {
    */
   unfollow(followerId: string, followedId: string): void {
 
-    this.afs.collection('users').ref.doc(followedId).get()
-      .then((user) => {
-        this.userToUnfollow = user.data().displayName;
-      });
+    // // get username
+    // this.afs.collection('users').ref.doc(followedId).get()
+    //   .then((user) => {
+    //     this.userToUnfollow = user.data().displayName;
+    //   });
 
     const followersRef = this.afs.doc(`followers/${followedId}`);
     const followingRef = this.afs.doc(`following/${followerId}`);
@@ -103,7 +109,8 @@ export class FollowService {
         })
           .then(() => {
             this.notificationsService
-              .success(`Successfully unfollowed ${this.userToUnfollow}!`, '', defaultAlertSettings);
+              // .success(`Successfully unfollowed ${this.userToUnfollow}!`, '', defaultAlertSettings);
+              .success(`Success!`, '', defaultAlertSettings);
           }).catch((error) => {
           this.notificationsService
             .error('Error upon unfollowing a user', error.message, defaultAlertSettings);
