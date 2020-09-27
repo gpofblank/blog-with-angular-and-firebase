@@ -23,9 +23,27 @@ export class AuthService {
     public router: Router,
     public ngZone: NgZone, // NgZone service to remove outside scope warning
     private notificationsService: NotificationsService) {
+    this.setLoggedUser();
+  }
 
+  get loggedUser() {
+    return this._loggedUser;
+  }
+
+  set loggedUser(user) {
+    this._loggedUser = user;
+  }
+
+  get isLoggedIn(): boolean {
+    const user = JSON.parse(localStorage.getItem('user'));
+    return (user !== null);
+    // return (user !== null && user.emailVerified !== false);
+  }
+
+
+  setLoggedUser() {
     const loggedUserFromLocalStorage = JSON.parse(localStorage.getItem('user'));
-    console.log('logged user ', loggedUserFromLocalStorage);
+    console.log('logged user ', loggedUserFromLocalStorage); // used for debugging purposes only.
 
     if (loggedUserFromLocalStorage) {
       this.loggedUser = loggedUserFromLocalStorage;
@@ -55,20 +73,6 @@ export class AuthService {
     }
   }
 
-  get loggedUser() {
-    return this._loggedUser;
-  }
-
-  set loggedUser(user) {
-    this._loggedUser = user;
-  }
-
-  get isLoggedIn(): boolean {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return (user !== null);
-    // return (user !== null && user.emailVerified !== false);
-  }
-
   /**
    * @ngdoc function
    * @description Logs in a user
@@ -81,6 +85,7 @@ export class AuthService {
     return this.afAuth.signInWithEmailAndPassword(email, password)
       .then((result) => {
         this.ngZone.run(() => {
+          this.setLoggedUser();
           this.router.navigateByUrl('');
         });
         // this.SetLoggedUser(result.user);
@@ -153,6 +158,7 @@ export class AuthService {
   GoogleAuth() {
     return this.AuthLogin(new GoogleAuthProvider()).then(() => {
       this.router.navigateByUrl('');
+      this.setLoggedUser();
     });
   }
 
