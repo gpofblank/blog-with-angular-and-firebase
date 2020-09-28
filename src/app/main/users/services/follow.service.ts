@@ -28,19 +28,11 @@ export class FollowService {
    */
   follow(followerId: string, followedId: string, followedUserName: string): void {
 
-    // // get username
-    // this.afs.collection('users').ref.doc(followedId).get()
-    //   .then((user) => {
-    //     this.userToFollow = user.data().displayName;
-    //   });
-
     // update followers
     this.afs.doc(`followers/${followedId}`).set({[followerId]: true}, {merge: true}).then(() => {
       // update following
       this.afs.doc(`following/${followerId}`).set({[followedId]: true}, {merge: true}).then(() => {
-        this.notificationsService
-          // .success(`Successfully followed ${this.userToUnfollow}!`, '', defaultAlertSettings);
-          .success(`Successfully followed ${followedUserName}!`, '', defaultAlertSettings);
+        this.followedUserNotif(followedUserName);
       }).catch((error) => {
         this.notificationsService
           .error('Error upon following the specified user', error.message, defaultAlertSettings);
@@ -85,7 +77,9 @@ export class FollowService {
   getFollowingForSpecificUser(followerId: string, followedId: string) {
     return this.afs.doc(`following/${followerId}`).valueChanges().pipe(
       map(data => {
-        return data[followedId];
+        if (data) {
+          return data[followedId];
+        }
       })
     );
   }
@@ -100,12 +94,6 @@ export class FollowService {
    */
   unfollow(followerId: string, followedId: string, followedUserName: string): void {
 
-    // // get username
-    // this.afs.collection('users').ref.doc(followedId).get()
-    //   .then((user) => {
-    //     this.userToUnfollow = user.data().displayName;
-    //   });
-
     const followersRef = this.afs.doc(`followers/${followedId}`);
     const followingRef = this.afs.doc(`following/${followerId}`);
 
@@ -119,9 +107,7 @@ export class FollowService {
           [followedId]: firebase.firestore.FieldValue.delete()
         })
           .then(() => {
-            this.notificationsService
-              // .success(`Successfully unfollowed ${this.userToUnfollow}!`, '', defaultAlertSettings);
-              .success(`Successfully unfollowed ${followedUserName}`, '', defaultAlertSettings);
+            this.unfollowedUserNotif(followedUserName);
           }).catch((error) => {
           this.notificationsService
             .error('Error upon unfollowing a user', error.message, defaultAlertSettings);
@@ -130,6 +116,16 @@ export class FollowService {
       this.notificationsService
         .error('Error upon unfollowing a user', error.message, defaultAlertSettings);
     });
+  }
+
+  followedUserNotif(userName) {
+    this.notificationsService
+      .success(`Successfully followed ${userName}!`, '', defaultAlertSettings);
+  }
+
+  unfollowedUserNotif(userName) {
+    this.notificationsService
+      .success(`Successfully unfollowed ${userName}`, '', defaultAlertSettings);
   }
 
   // This is how it works in the RealTime Database world... (just for future ref)
